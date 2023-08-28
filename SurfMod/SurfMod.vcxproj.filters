@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="MetaMod">
+      <UniqueIdentifier>{609f0f2f-1850-43ec-94ac-5e16550d6d01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MetaMod\MetaDLL">
+      <UniqueIdentifier>{bd968d6a-40fe-47ea-ae1f-23bf2da6b4b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MetaMod\MetaEngine">
+      <UniqueIdentifier>{137fa059-58d0-4974-9e90-26866749d39f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ReAPI">
+      <UniqueIdentifier>{70eb3410-f251-4412-b4da-411701b101a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ReGameDLL">
+      <UniqueIdentifier>{b12beddc-a754-41f2-b9a8-950ac06557f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MetaMod\Precompiled">
+      <UniqueIdentifier>{8409f983-aca8-47c7-bc99-ddecf18efa94}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MetaMod.h">
+      <Filter>MetaMod</Filter>
+    </ClInclude>
+    <ClInclude Include="MetaDLL.h">
+      <Filter>MetaMod\MetaDLL</Filter>
+    </ClInclude>
+    <ClInclude Include="MetaEngine.h">
+      <Filter>MetaMod\MetaEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="ReAPI.h">
+      <Filter>ReAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="ReGameDLL.h">
+      <Filter>ReGameDLL</Filter>
+    </ClInclude>
+    <ClInclude Include="precompiled.h">
+      <Filter>MetaMod\Precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="MemScript.hpp">
+      <Filter>MetaMod</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MetaMod.cpp">
+      <Filter>MetaMod</Filter>
+    </ClCompile>
+    <ClCompile Include="MetaDLL.cpp">
+      <Filter>MetaMod\MetaDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="MetaEngine.cpp">
+      <Filter>MetaMod\MetaEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="precompiled.cpp">
+      <Filter>MetaMod\Precompiled</Filter>
+    </ClCompile>
+    <ClCompile Include="ReAPI.cpp">
+      <Filter>ReAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="ReGameDLL.cpp">
+      <Filter>ReGameDLL</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
