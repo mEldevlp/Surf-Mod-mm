@@ -56,6 +56,8 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable, m
 
 	ReGameDLL_Init();
 
+	LOG_CONSOLE(PLID, "[%s] Surf Mod successfully started", Plugin_info.logtag);
+
 	return 1;
 }
 

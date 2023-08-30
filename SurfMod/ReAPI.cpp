@@ -96,7 +96,7 @@ bool ReAPI_Stop()
 
 void ReAPI_SV_DropClient(IRehldsHook_SV_DropClient* chain, IGameClient* client, bool crash, const char* Reason)
 {
-	auto pEdict = client->GetEdict();
+	//auto pEdict = client->GetEdict();
 
 	chain->callNext(client, crash, Reason);
 }

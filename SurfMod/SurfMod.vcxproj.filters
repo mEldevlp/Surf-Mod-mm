@@ -19,6 +19,21 @@
     <Filter Include="MetaMod\Precompiled">
       <UniqueIdentifier>{8409f983-aca8-47c7-bc99-ddecf18efa94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SurfMod">
+      <UniqueIdentifier>{7222d9f6-2990-4ffc-a76e-3545b6314ef6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SurfMod\SurfUtils">
+      <UniqueIdentifier>{38bc0dbe-7834-4b57-8455-c508a8804284}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SurfMod\SurfCommand">
+      <UniqueIdentifier>{304559b2-004b-479b-bd1a-7977770841f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SurfMod\SurfMenu">
+      <UniqueIdentifier>{8a487252-fc0c-404e-90f7-05c9bb1819c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SurfMod\SurfPlayerMenu">
+      <UniqueIdentifier>{ed7be30a-15a0-4cb3-82b3-e5520547a0d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MetaMod.h">
@@ -42,6 +57,18 @@
     <ClInclude Include="MemScript.hpp">
       <Filter>MetaMod</Filter>
     </ClInclude>
+    <ClInclude Include="SurfModCommand.h">
+      <Filter>SurfMod\SurfCommand</Filter>
+    </ClInclude>
+    <ClInclude Include="SurfModUtils.h">
+      <Filter>SurfMod\SurfUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="SurfModMenu.h">
+      <Filter>SurfMod\SurfMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="SurfModPlayerMenu.h">
+      <Filter>SurfMod\SurfPlayerMenu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MetaMod.cpp">
@@ -61,6 +88,18 @@
     </ClCompile>
     <ClCompile Include="ReGameDLL.cpp">
       <Filter>ReGameDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="SurfModCommand.cpp">
+      <Filter>SurfMod\SurfCommand</Filter>
+    </ClCompile>
+    <ClCompile Include="SurfModUtils.cpp">
+      <Filter>SurfMod\SurfUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="SurfModMenu.cpp">
+      <Filter>SurfMod\SurfMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="SurfModPlayerMenu.cpp">
+      <Filter>SurfMod\SurfPlayerMenu</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

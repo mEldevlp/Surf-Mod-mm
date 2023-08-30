@@ -79,29 +79,8 @@ bool ReGameDLL_Init()
 
 	g_ReGameHookchains->InstallGameRules()->registerHook(ReGameDLL_InstallGameRules);
 
-	g_ReGameHookchains->HandleMenu_ChooseTeam()->registerHook(ReGameDLL_HandleMenu_ChooseTeam);
-
-	g_ReGameHookchains->CBasePlayer_GetIntoGame()->registerHook(ReGameDLL_CBasePlayer_GetIntoGame);
-
-	g_ReGameHookchains->CBasePlayer_SwitchTeam()->registerHook(ReGameDLL_CBasePlayer_SwitchTeam);
-
-	g_ReGameHookchains->CBasePlayer_AddAccount()->registerHook(ReGameDLL_CBasePlayer_AddAccount);
-
-	g_ReGameHookchains->CBasePlayer_HasRestrictItem()->registerHook(ReGameDLL_CBasePlayer_HasRestrictItem);
 
 	g_ReGameHookchains->InternalCommand()->registerHook(ReGameDLL_InternalCommand);
-
-	g_ReGameHookchains->CSGameRules_OnRoundFreezeEnd()->registerHook(ReGameDLL_CSGameRules_OnRoundFreezeEnd);
-
-	g_ReGameHookchains->CSGameRules_RestartRound()->registerHook(ReGameDLL_CSGameRules_RestartRound);
-
-	g_ReGameHookchains->RoundEnd()->registerHook(ReGameDLL_RoundEnd);
-
-	g_ReGameHookchains->CBasePlayer_TakeDamage()->registerHook(ReGameDLL_CBasePlayer_TakeDamage);
-
-	g_ReGameHookchains->CGrenade_ExplodeSmokeGrenade()->registerHook(ReGameDLL_CGrenade_ExplodeSmokeGrenade);
-
-	g_ReGameHookchains->CSGameRules_CanPlayerHearPlayer()->registerHook(ReGameDLL_CSGameRules_CanPlayerHearPlayer);
 
 	return true;
 }
@@ -110,29 +89,7 @@ bool ReGameDLL_Stop()
 {
 	g_ReGameHookchains->InstallGameRules()->unregisterHook(ReGameDLL_InstallGameRules);
 
-	g_ReGameHookchains->HandleMenu_ChooseTeam()->unregisterHook(ReGameDLL_HandleMenu_ChooseTeam);
-
-	g_ReGameHookchains->CBasePlayer_GetIntoGame()->unregisterHook(ReGameDLL_CBasePlayer_GetIntoGame);
-
-	g_ReGameHookchains->CBasePlayer_SwitchTeam()->unregisterHook(ReGameDLL_CBasePlayer_SwitchTeam);
-
-	g_ReGameHookchains->CBasePlayer_AddAccount()->unregisterHook(ReGameDLL_CBasePlayer_AddAccount);
-
-	g_ReGameHookchains->CBasePlayer_HasRestrictItem()->unregisterHook(ReGameDLL_CBasePlayer_HasRestrictItem);
-
 	g_ReGameHookchains->InternalCommand()->unregisterHook(ReGameDLL_InternalCommand);
-
-	g_ReGameHookchains->CSGameRules_OnRoundFreezeEnd()->unregisterHook(ReGameDLL_CSGameRules_OnRoundFreezeEnd);
-
-	g_ReGameHookchains->CSGameRules_RestartRound()->unregisterHook(ReGameDLL_CSGameRules_RestartRound);
-
-	g_ReGameHookchains->RoundEnd()->unregisterHook(ReGameDLL_RoundEnd);
-
-	g_ReGameHookchains->CBasePlayer_TakeDamage()->unregisterHook(ReGameDLL_CBasePlayer_TakeDamage);
-
-	g_ReGameHookchains->CGrenade_ExplodeSmokeGrenade()->unregisterHook(ReGameDLL_CGrenade_ExplodeSmokeGrenade);
-
-	g_ReGameHookchains->CSGameRules_CanPlayerHearPlayer()->unregisterHook(ReGameDLL_CSGameRules_CanPlayerHearPlayer);
 
 	return true;
 }
@@ -153,85 +110,17 @@ CGameRules *ReGameDLL_InstallGameRules(IReGameHook_InstallGameRules* chain)
 	return gamerules;
 }
 
-BOOL ReGameDLL_HandleMenu_ChooseTeam(IReGameHook_HandleMenu_ChooseTeam* chain, CBasePlayer* Player, int Slot)
-{
-
-
-	return chain->callNext(Player, Slot);
-}
-
-bool ReGameDLL_CBasePlayer_GetIntoGame(IReGameHook_CBasePlayer_GetIntoGame* chain, CBasePlayer* Player)
-{
-	bool ret = chain->callNext(Player);
-
-
-	return ret;
-}
-
-void ReGameDLL_CBasePlayer_SwitchTeam(IReGameHook_CBasePlayer_SwitchTeam* chain, CBasePlayer* Player)
-{
-	chain->callNext(Player);
-
-
-}
-
-void ReGameDLL_CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount* chain, CBasePlayer* pthis, int amount, RewardType type, bool bTrackChange)
-{
-
-
-	chain->callNext(pthis, amount, type, bTrackChange);
-}
-
-bool ReGameDLL_CBasePlayer_HasRestrictItem(IReGameHook_CBasePlayer_HasRestrictItem* chain, CBasePlayer* pthis, ItemID item, ItemRestType type)
-{
-	auto ret = chain->callNext(pthis, item, type);
-
-
-
-	return ret;
-}
-
 void ReGameDLL_InternalCommand(IReGameHook_InternalCommand* chain, edict_t* pEntity, const char* pcmd, const char* parg1)
 {
-	//auto Player = UTIL_PlayerByIndexSafe(ENTINDEX(pEntity));
+	auto Player = UTIL_PlayerByIndexSafe(ENTINDEX(pEntity));
+
+	if (Player)
+	{
+		if (gSurfModCommand.ClientCommand(Player, pcmd, parg1))
+		{
+			return void();
+		}
+	}
 
 	chain->callNext(pEntity, pcmd, parg1);
-}
-
-void ReGameDLL_CSGameRules_OnRoundFreezeEnd(IReGameHook_CSGameRules_OnRoundFreezeEnd* chain)
-{
-	chain->callNext();
-}
-
-void ReGameDLL_CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound* chain)
-{
-	chain->callNext();
-}
-
-bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEventEndRound event, float tmDelay)
-{
-	auto ret = chain->callNext(winStatus, event, tmDelay);
-
-	return ret;
-}
-
-int ReGameDLL_CBasePlayer_TakeDamage(IReGameHook_CBasePlayer_TakeDamage* chain, CBasePlayer* pThis, entvars_t* pevInflictor, entvars_t* pevAttacker, float& flDamage, int bitsDamageType)
-{
-	int ret = chain->callNext(pThis, pevInflictor, pevAttacker, flDamage, bitsDamageType);
-
-
-	return ret;
-}
-
-void ReGameDLL_CGrenade_ExplodeSmokeGrenade(IReGameHook_CGrenade_ExplodeSmokeGrenade* chain, CGrenade* pthis)
-{
-	chain->callNext(pthis);
-}
-
-bool ReGameDLL_CSGameRules_CanPlayerHearPlayer(IReGameHook_CSGameRules_CanPlayerHearPlayer* chain, CBasePlayer* pListener, CBasePlayer* pSender)
-{
-	auto ret = chain->callNext(pListener, pSender);
-
-
-	return ret;
 }
