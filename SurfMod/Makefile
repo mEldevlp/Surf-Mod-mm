@@ -5,7 +5,7 @@ CSSDK 		= include/cssdk
 METAMOD 	= include/metamod
 
 # Release file output name
-NAME 		= surfmod
+NAME 		= SurfMod
 
 # Release directory
 BIN_DIR 	= Release
