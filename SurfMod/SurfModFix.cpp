@@ -5,27 +5,27 @@ SurfMod::Fix gSurfModFix;
 bool SurfMod::Fix::CmdStart(edict_t* player, const usercmd_s* cmd, unsigned int random_seed)
 {
 	auto UserIndex = g_engfuncs.pfnGetPlayerUserId(player);
-	auto CPlayer = UTIL_PlayerByIndexSafe(UserIndex);
 
-	if (!CPlayer->IsAlive())
+	if (UserIndex > 0)
 	{
-		return false;
+		this->m_player_start_velocity[UserIndex][0] = player->v.velocity.x;
+		this->m_player_start_velocity[UserIndex][1] = player->v.velocity.y;
+		this->m_player_start_velocity[UserIndex][2] = player->v.velocity.z;
 	}
-	else
-	{
-		gSurfModFix.m_player_start_velocity[UserIndex][0] = player->v.velocity.x;
-		gSurfModFix.m_player_start_velocity[UserIndex][1] = player->v.velocity.y;
-		gSurfModFix.m_player_start_velocity[UserIndex][2] = player->v.velocity.z;
 
-		return true;
-	}
+	return true;
 }
 
 bool SurfMod::Fix::CmdEnd(edict_t* player)
 {
 	auto UserIndex = g_engfuncs.pfnGetPlayerUserId(player);
+	
+	if (UserIndex < 0 && UserIndex > 33)
+	{
+		return false;
+	}
 
-	if (!UTIL_PlayerByIndexSafe(UserIndex)->IsAlive())
+	if (player->v.velocity.x == 0.f || player->v.velocity.y == 0.f)
 	{
 		return false;
 	}
@@ -43,18 +43,15 @@ bool SurfMod::Fix::CmdEnd(edict_t* player)
 		if (this->is_hull_vacant(playerOrigin, hull, player))
 		{
 			player->v.origin.z = player->v.origin.z + UNSTUCK_HEIGHT;
-			player->v.velocity.x = gSurfModFix.m_player_start_velocity[UserIndex][0];
-			player->v.velocity.y = gSurfModFix.m_player_start_velocity[UserIndex][1];
-			player->v.velocity.z = gSurfModFix.m_player_start_velocity[UserIndex][2];
+			player->v.velocity.x = this->m_player_start_velocity[UserIndex][0];
+			player->v.velocity.y = this->m_player_start_velocity[UserIndex][1];
+			player->v.velocity.z = this->m_player_start_velocity[UserIndex][2];
+
+			g_engfuncs.pfnServerPrint(gSurfModUtility.FormatString("executed unstuck\n"));
 		}
 	}
-
-	return false;
-}
-
-bool SurfMod::Fix::is_vector_zero(const vec_t velocity[3])
-{
-	return (velocity[0] == 0.f) && (velocity[1] == 0.f);
+	
+	return true;
 }
 
 bool SurfMod::Fix::is_hull_vacant(const float origin[3], int hull, edict_t* player)
