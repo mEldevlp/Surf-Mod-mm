@@ -15,7 +15,7 @@ bool SurfMod::Command::ClientCommand(CBasePlayer* Player, const char* pcmd, cons
 	{
 		return false;
 	}
-
+	
 	// If is menuselect command
 	if (!Q_strcmp(pcmd, "menuselect"))
 	{

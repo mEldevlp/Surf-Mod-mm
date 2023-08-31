@@ -79,3 +79,4 @@
 #include "SurfModUtils.h"
 #include "SurfModMenu.h"
 #include "SurfModPlayerMenu.h"
+#include "SurfModFix.h"

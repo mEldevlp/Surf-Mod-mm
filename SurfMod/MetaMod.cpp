@@ -30,7 +30,7 @@ mutil_funcs_t *gpMetaUtilFuncs;
 C_DLLEXPORT void WINAPI GiveFnptrsToDll(enginefuncs_t *pengfuncsFromEngine, globalvars_t *pGlobals)
 {
 	memcpy(&g_engfuncs, pengfuncsFromEngine, sizeof(enginefuncs_t));
-
+	
 	gpGlobals = pGlobals;
 }
 
@@ -57,7 +57,7 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable, m
 	ReGameDLL_Init();
 
 	LOG_CONSOLE(PLID, "[%s] Surf Mod successfully started", Plugin_info.logtag);
-
+	
 	return 1;
 }
 

@@ -145,4 +145,3 @@ void SurfMod::Utility::ReplaceAll(std::string& String, const std::string& From, 
 		}
 	}
 }
-

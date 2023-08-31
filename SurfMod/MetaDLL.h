@@ -1,7 +1,8 @@
 #pragma once
 
 #pragma region DLL_PRE
-BOOL DLL_PRE_ClientConnect(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]);
+void DLL_CmdStart(const edict_t* player, const struct usercmd_s* cmd, unsigned int random_seed);
+void DLL_CmdEnd(const edict_t* player);
 #pragma endregion
 
 #pragma region DLL_POST
