@@ -10,4 +10,4 @@ copy %outputFile% %copyPath%
 
 cd C:\Users\mEl\Desktop\CS_SERVER_1_9_AMX\
 
-start /wait /high hlds.exe -console -game cstrike +port 27017 +map surf_ski_2 +maxplayers 32 +sys_ticrate 512
+start /wait /high hlds.exe -console -game cstrike +port 27017 +map de_dust2 +maxplayers 16 +sys_ticrate 512

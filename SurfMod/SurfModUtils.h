@@ -51,8 +51,8 @@ namespace SurfMod
 		// Get players array
 		//int GetPlayers(CBasePlayer* Players[MAX_CLIENTS], bool InGameOnly);
 
-		// Get players vector
-		//std::vector<CBasePlayer*> GetPlayers(bool InGameOnly, bool ReturnBots);
+		 //Get players vector
+		std::vector<CBasePlayer*> GetPlayers(bool InGameOnly, bool ReturnBots);
 
 		// Get team players in vector
 		//std::vector<CBasePlayer*> GetPlayers(TeamName Team, bool ReturnBots);

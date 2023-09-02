@@ -17,9 +17,9 @@ namespace SurfMod
 		bool CmdEnd(edict_t* player);
 
 	private:		
-		bool is_vector_zero(const float velocity_x, const float velocity_y);
 		bool is_hull_vacant(const float origin[3], int hull, edict_t* player);
 		bool is_player_on_slope(edict_t* player);	
+
 		vec_t m_player_start_velocity[32][3];
 	};
 };
