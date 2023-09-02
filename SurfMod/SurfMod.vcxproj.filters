@@ -37,6 +37,12 @@
     <Filter Include="SurfMod\SurfFix">
       <UniqueIdentifier>{c7060471-e74a-478f-90ce-d52e6363790d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SurfMod\SurfDuels">
+      <UniqueIdentifier>{5da80521-a81f-4249-a379-1f371fe43b8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SurfMod\SurfPlayer">
+      <UniqueIdentifier>{02c35704-59a3-4a9d-9a9b-d6073233ddac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MetaMod.h">
@@ -75,6 +81,12 @@
     <ClInclude Include="SurfModFix.h">
       <Filter>SurfMod\SurfFix</Filter>
     </ClInclude>
+    <ClInclude Include="SurfModPlayer.h">
+      <Filter>SurfMod\SurfPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="SurfModDuels.h">
+      <Filter>SurfMod\SurfDuels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MetaMod.cpp">
@@ -109,6 +121,12 @@
     </ClCompile>
     <ClCompile Include="SurfModFix.cpp">
       <Filter>SurfMod\SurfFix</Filter>
+    </ClCompile>
+    <ClCompile Include="SurfModPlayer.cpp">
+      <Filter>SurfMod\SurfPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="SurfModDuels.cpp">
+      <Filter>SurfMod\SurfDuels</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

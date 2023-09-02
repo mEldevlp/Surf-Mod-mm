@@ -78,8 +78,6 @@ bool ReGameDLL_Init()
 	}
 
 	g_ReGameHookchains->InstallGameRules()->registerHook(ReGameDLL_InstallGameRules);
-
-
 	g_ReGameHookchains->InternalCommand()->registerHook(ReGameDLL_InternalCommand);
 
 	return true;
@@ -88,11 +86,11 @@ bool ReGameDLL_Init()
 bool ReGameDLL_Stop()
 {
 	g_ReGameHookchains->InstallGameRules()->unregisterHook(ReGameDLL_InstallGameRules);
-
 	g_ReGameHookchains->InternalCommand()->unregisterHook(ReGameDLL_InternalCommand);
 
 	return true;
 }
+
 
 CGameRules *ReGameDLL_InstallGameRules(IReGameHook_InstallGameRules* chain)
 {

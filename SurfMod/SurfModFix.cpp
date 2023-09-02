@@ -46,8 +46,6 @@ bool SurfMod::Fix::CmdEnd(edict_t* player)
 			player->v.velocity.x = this->m_player_start_velocity[UserIndex][0];
 			player->v.velocity.y = this->m_player_start_velocity[UserIndex][1];
 			player->v.velocity.z = this->m_player_start_velocity[UserIndex][2];
-
-			g_engfuncs.pfnServerPrint(gSurfModUtility.FormatString("executed unstuck\n"));
 		}
 	}
 	

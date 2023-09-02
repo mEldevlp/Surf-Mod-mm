@@ -15,13 +15,11 @@ void SurfMod::Utility::SayText(edict_t* pEntity, int Sender, const char* Format,
 		Q_vsnprintf(Buffer, sizeof(Buffer), Format, ArgList);
 		va_end(ArgList);
 
-
 		char Temp[MAX_LINE_TXT_MSG] = { 0 };
 
 		Q_snprintf(Temp, sizeof(Temp), "^1[^4%s^1] %s", Plugin_info.logtag, Buffer);
 
 		Q_strcpy_s(Buffer, Temp);
-		
 
 		if (Sender < PRINT_TEAM_BLUE || Sender > gpGlobals->maxClients)
 		{
@@ -67,6 +65,38 @@ void SurfMod::Utility::SayText(edict_t* pEntity, int Sender, const char* Format,
 	}
 }
 
+std::vector<CBasePlayer*> SurfMod::Utility::GetPlayers(bool InGameOnly, bool ReturnBots)
+{
+	std::vector<CBasePlayer*> Players;
+
+	for (int i = 1; i <= gpGlobals->maxClients; ++i)
+	{
+		auto Player = UTIL_PlayerByIndexSafe(i);
+
+		if (Player)
+		{
+			if (!Player->IsDormant())
+			{
+				if (InGameOnly)
+				{
+					if (Player->m_iTeam != TeamName::TERRORIST  &&  Player->m_iTeam != TeamName::CT)
+					{
+						continue;
+					}
+				}
+
+				if (!ReturnBots && Player->IsBot())
+				{
+					continue;
+				}
+
+				Players.push_back(Player);
+			}
+		}
+	}
+
+	return Players;
+}
 
 int SurfMod::Utility::ParseLinesAndColors(char* Buffer)
 {

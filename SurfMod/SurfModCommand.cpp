@@ -2,46 +2,65 @@
 
 SurfMod::Command gSurfModCommand;
 
+void SurfMod::Command::ServerActivate()
+{
+	return void();
+}
+
 bool SurfMod::Command::ClientCommand(CBasePlayer* Player, const char* pcmd, const char* parg1)
 {
-	// IF is not null
 	if (!pcmd)
 	{
 		return false;
 	}
 
-	// If string is not empty
 	if (pcmd[0u] == '\0')
 	{
 		return false;
 	}
-	
-	// If is menuselect command
-	if (!Q_strcmp(pcmd, "menuselect"))
+
+	switch (this->get_UserCommand(pcmd))
 	{
-		// If has arguments
-		if (parg1)
+		case CONSOLE_COMMANDS::MENUSELECT:
 		{
-			// If native CS menu is not being displayed
-			if (Player->m_iMenu == Menu_OFF)
+			if (parg1 && Player->m_iMenu == Menu_OFF)
 			{
-				// Handle menu
 				if (gSurfModmenu[Player->entindex()].Handle(Player->entindex(), atoi(parg1)))
 				{
-					// Return result
 					return true;
 				}
 			}
+
+			break;
 		}
+		case CONSOLE_COMMANDS::CHOOSETEAM:
+		{
+			gSurfModPlayerMenu.MainMenu(Player->entindex());
+			return true;
+		}
+		case CONSOLE_COMMANDS::JUDGE_MENU:
+		{
+			gSurfModDuel.JudgeMenuMain(Player->entindex());
+			return true;
+		}
+	}
+
+	return false;
+}
+
+SurfMod::CONSOLE_COMMANDS SurfMod::Command::get_UserCommand(const char* pcmd)
+{
+	if (!Q_strcmp(pcmd, "menuselect"))
+	{
+		return CONSOLE_COMMANDS::MENUSELECT;
 	}
 	else if (!Q_strcmp(pcmd, "chooseteam"))
 	{
-		// Сделать чтобы выводило русский
-		//gSurfModUtility.SayText(Player->edict(), PRINT_TEAM_DEFAULT, "Вызвано меню");
-
-		gSurfModPlayerMenu.MainMenu(Player->entindex());
-		return true;
+		return CONSOLE_COMMANDS::CHOOSETEAM;
 	}
-	
-	return false;
+	else if (!Q_strcmp(pcmd, "judge"))
+	{
+		return CONSOLE_COMMANDS::JUDGE_MENU;
+	}
 }
+

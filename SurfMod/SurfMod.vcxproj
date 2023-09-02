@@ -101,8 +101,10 @@
     <ClInclude Include="ReAPI.h" />
     <ClInclude Include="ReGameDLL.h" />
     <ClInclude Include="SurfModCommand.h" />
+    <ClInclude Include="SurfModDuels.h" />
     <ClInclude Include="SurfModFix.h" />
     <ClInclude Include="SurfModMenu.h" />
+    <ClInclude Include="SurfModPlayer.h" />
     <ClInclude Include="SurfModPlayerMenu.h" />
     <ClInclude Include="SurfModUtils.h" />
   </ItemGroup>
@@ -116,8 +118,10 @@
     <ClCompile Include="ReAPI.cpp" />
     <ClCompile Include="ReGameDLL.cpp" />
     <ClCompile Include="SurfModCommand.cpp" />
+    <ClCompile Include="SurfModDuels.cpp" />
     <ClCompile Include="SurfModFix.cpp" />
     <ClCompile Include="SurfModMenu.cpp" />
+    <ClCompile Include="SurfModPlayer.cpp" />
     <ClCompile Include="SurfModPlayerMenu.cpp" />
     <ClCompile Include="SurfModUtils.cpp" />
   </ItemGroup>

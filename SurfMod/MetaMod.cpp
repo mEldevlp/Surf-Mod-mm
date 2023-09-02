@@ -46,9 +46,12 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable, m
 
 	gMetaFunctionTable.pfnGetEngineFunctions_Post = GetEngineFunctions_Post;
 
+
+
 	memcpy(pFunctionTable, &gMetaFunctionTable, sizeof(META_FUNCTIONS));
 
 	gpMetaGlobals = pMGlobals;
+
 
 	gpGamedllFuncs = pGamedllFuncs;
 
@@ -75,6 +78,7 @@ C_DLLEXPORT int Meta_Query(char *interfaceVersion, plugin_info_t **pPlugInfo, mu
 	*pPlugInfo = &Plugin_info;
 
 	gpMetaUtilFuncs = pMetaUtilFuncs;
+
 
 	return 1;
 }
