@@ -9,7 +9,7 @@ namespace SurfMod {
 		void JudgeMenuMain(int EntityIndex);
 		static void JudgeMenuMain_Handle(int EntityIndex, P_MENU_ITEM Item);
 
-		void JudgeChoosePlayerMenu(int EntityIndex);
+		void JudgeChoosePlayerMenu(int EntityIndex, bool isfirst_open);
 		static void JudgeChoosePlayerMenu_Handle(int EntityIndex, P_MENU_ITEM Item);
 
 		bool m_is_now_duel = false;

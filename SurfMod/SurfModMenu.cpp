@@ -166,17 +166,16 @@ void SurfMod::Menu::Display(int EntityIndex, int Page)
 
 	std::string MenuText = "";
 
-	MenuText = "\\y" + this->m_Text;
+	MenuText = this->m_Text;
 
+	/* до лучших времён
 	if (PageCount > 1)
 	{
 		MenuText += "\\R";
 		MenuText += std::to_string(Page + 1);
 		MenuText += "/";
 		MenuText += std::to_string(PageCount);
-	}
-
-	MenuText += "\n\\w\n";
+	}*/
 
 	unsigned int End = (Start + this->m_PageOption);
 
