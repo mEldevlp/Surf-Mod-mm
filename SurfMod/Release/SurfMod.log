@@ -14,9 +14,9 @@
   SurfModUtils.cpp
      Creating library C:\Users\mEl\Desktop\SurfMod\Surf-Mod-mm\Release\SurfMod_mm.lib and object C:\Users\mEl\Desktop\SurfMod\Surf-Mod-mm\Release\SurfMod_mm.exp
   Generating code
-  Previous IPDB not found, fall back to full compilation.
-C:\Users\mEl\Desktop\SurfMod\Surf-Mod-mm\SurfMod\SurfModCommand.cpp(65): warning C4715: 'SurfMod::Command::get_UserCommand': not all control paths return a value
-  All 556 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  0 of 556 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   SurfMod.vcxproj -> C:\Users\mEl\Desktop\SurfMod\Surf-Mod-mm\Release\SurfMod_mm.dll
   Скопировано файлов:         1.
