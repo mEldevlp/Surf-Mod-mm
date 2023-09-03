@@ -162,7 +162,7 @@ void SurfMod::Menu::Display(int EntityIndex, int Page)
 		Start = Page = this->m_Page = 0;
 	}
 
-	auto PageCount = (int)this->m_Data.size() > this->m_PageOption ? (this->m_Data.size() / this->m_PageOption + ((this->m_Data.size() % this->m_PageOption) ? 1 : 0)) : 1;
+	//auto PageCount = (int)this->m_Data.size() > this->m_PageOption ? (this->m_Data.size() / this->m_PageOption + ((this->m_Data.size() % this->m_PageOption) ? 1 : 0)) : 1;
 
 	std::string MenuText = "";
 

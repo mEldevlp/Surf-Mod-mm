@@ -14,7 +14,7 @@ constexpr auto PRINT_RADIO = 5;
 
 constexpr auto MAX_LINE_TXT_MSG = 191;
 
-#define _TXT(TextString, ...) gSurfModUtility.FormatString(TextString, __VA_ARGS__)
+#define _TXT(TextString, ...) (gSurfModUtility.FormatString(TextString, __VA_ARGS__))
 
 namespace SurfMod 
 {
