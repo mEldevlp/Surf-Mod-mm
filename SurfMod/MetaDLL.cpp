@@ -9,7 +9,7 @@ DLL_FUNCTIONS gDLL_FunctionTable_Post;
 #pragma region DLL_PRE
 C_DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion)
 {
-	memset(&gDLL_FunctionTable_Pre, 0, sizeof DLL_FUNCTIONS);
+	memset(&gDLL_FunctionTable_Pre, 0, sizeof(DLL_FUNCTIONS));
 	
 	gDLL_FunctionTable_Pre.pfnCmdStart = DLL_PRE_CmdStart;
 	gDLL_FunctionTable_Pre.pfnCmdEnd = DLL_PRE_CmdEnd;
