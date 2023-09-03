@@ -82,3 +82,4 @@
 #include "SurfModFix.h"
 #include "SurfModPlayer.h"
 #include "SurfModDuels.h"
+#include "SurfModTask.h"
