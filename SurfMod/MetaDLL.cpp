@@ -49,6 +49,8 @@ C_DLLEXPORT int GetEntityAPI2_Post(DLL_FUNCTIONS* pFunctionTable, int* interface
 	memset(&gDLL_FunctionTable_Post, 0, sizeof(DLL_FUNCTIONS));
 
 	gDLL_FunctionTable_Post.pfnServerActivate = DLL_POST_ServerActivate;
+	gDLL_FunctionTable_Post.pfnServerDeactivate = DLL_POST_ServerDeactivate;
+	gDLL_FunctionTable_Post.pfnStartFrame = DLL_POST_StartFrame;
 
 	memcpy(pFunctionTable, &gDLL_FunctionTable_Post, sizeof(DLL_FUNCTIONS));
 
@@ -58,6 +60,21 @@ C_DLLEXPORT int GetEntityAPI2_Post(DLL_FUNCTIONS* pFunctionTable, int* interface
 void DLL_POST_ServerActivate(edict_t* pEdictList, int edictCount, int clientMax)
 {
 	gSurfModCommand.ServerActivate();
+	gSurfModTask.ServerActivate();
+
+	RETURN_META(MRES_IGNORED);
+}
+
+void DLL_POST_ServerDeactivate(void)
+{
+	gSurfModTask.ServerDeactivate();
+
+	RETURN_META(MRES_IGNORED);
+}
+
+void DLL_POST_StartFrame(void)
+{
+	gSurfModTask.ServerFrame();
 
 	RETURN_META(MRES_IGNORED);
 }
