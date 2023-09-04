@@ -29,15 +29,14 @@ jobs:
     - name: Update alternatives
       run: update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 100 --slave /usr/bin/g++ g++ /usr/bin/g++-5
       
-    #- name: Run build
-     # working-directory: ./SurfMod
-      #run: make
+    - name: Run build
+      working-directory: ./SurfMod
+      run: make
 
     - name: Move release file to publish
       run: |
-            SurfMod/* make
             mkdir -p publish/addons/SurfMod/dlls
-            mv Surf-Mod-mm/Release/SurfMod_mm.so publish/addons/SurfMod/dlls
+            mv ./Surf-Mod-mm/Release/SurfMod_mm.so publish/addons/SurfMod/dlls
             
     - name: Deploy artifacts
       uses: actions/upload-artifact@v3
