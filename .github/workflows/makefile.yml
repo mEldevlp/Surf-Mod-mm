@@ -36,7 +36,7 @@ jobs:
     - name: Move release file to publish
       run: |
             mkdir -p publish/addons/SurfMod/dlls
-            mv ./Surf-Mod-mm/SurfMod/Release/SurfMod_mm.so publish/addons/SurfMod/dlls
+            mv ./SurfMod/Release/SurfMod_mm.so publish/addons/SurfMod/dlls
             
     - name: Deploy artifacts
       uses: actions/upload-artifact@v3
