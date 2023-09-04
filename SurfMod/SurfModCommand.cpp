@@ -1,13 +1,13 @@
 #include "precompiled.h"
 
-SurfMod::Command gSurfModCommand;
+surfmod::CCommand g_SurfModCommand;
 
-void SurfMod::Command::ServerActivate()
+void surfmod::CCommand::ServerActivate()
 {
 	return void();
 }
 
-bool SurfMod::Command::ClientCommand(CBasePlayer* Player, const char* pcmd, const char* parg1)
+bool surfmod::CCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, const char* parg1)
 {
 	if (!pcmd)
 	{
@@ -25,7 +25,7 @@ bool SurfMod::Command::ClientCommand(CBasePlayer* Player, const char* pcmd, cons
 		{
 			if (parg1 && Player->m_iMenu == Menu_OFF)
 			{
-				if (gSurfModmenu[Player->entindex()].Handle(Player->entindex(), atoi(parg1)))
+				if (g_SurfModMenu[Player->entindex()].Handle(Player->entindex(), atoi(parg1)))
 				{
 					return true;
 				}
@@ -35,12 +35,12 @@ bool SurfMod::Command::ClientCommand(CBasePlayer* Player, const char* pcmd, cons
 		}
 		case CONSOLE_COMMANDS::CHOOSETEAM:
 		{
-			gSurfModPlayerMenu.MainMenu(Player->entindex());
+			g_SurfModPlayerMenu.MainMenu(Player->entindex());
 			return true;
 		}
 		case CONSOLE_COMMANDS::JUDGE_MENU:
 		{
-			gSurfModDuel.JudgeMenuMain(Player->entindex());
+			g_SurfModDuel.JudgeMenuMain(Player->entindex());
 			return true;
 		}
 	}
@@ -48,7 +48,7 @@ bool SurfMod::Command::ClientCommand(CBasePlayer* Player, const char* pcmd, cons
 	return false;
 }
 
-SurfMod::CONSOLE_COMMANDS SurfMod::Command::get_UserCommand(const char* pcmd)
+surfmod::CONSOLE_COMMANDS surfmod::CCommand::get_UserCommand(const char* pcmd)
 {
 	if (!Q_strcmp(pcmd, "menuselect"))
 	{

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace SurfMod
+namespace surfmod
 {
 #define MENU_PAGE_OPTION 7
 
@@ -12,7 +12,7 @@ namespace SurfMod
 		int			Extra;
 	} P_MENU_ITEM, * LP_MENU_ITEM;
 
-	class Menu
+	class CMenu
 	{
 	public:
 		void Clear();
@@ -31,16 +31,15 @@ namespace SurfMod
 		void Display(int EntityIndex, int Page);
 		void ShowMenu(int EntityIndex, int Slots, int Time, std::string Text);
 
-
-
 	private:
-		std::string m_Text;
+		std::string m_szText;
 		std::vector<P_MENU_ITEM> m_Data;
-		int m_Page = 0;
-		bool m_Exit = false;
-		int m_PageOption = MENU_PAGE_OPTION;
-		void* m_Func = nullptr;
+		int m_iPage = 0;
+		bool m_bExit = false;
+		int m_iPageOption = MENU_PAGE_OPTION;
+		void* m_vpFunc = nullptr;
 	};
-}
 
-extern std::array<SurfMod::Menu, MAX_CLIENTS + 1> gSurfModmenu;
+}; /* namespace surfmod */
+
+extern std::array<surfmod::CMenu, MAX_CLIENTS + 1> g_SurfModMenu;

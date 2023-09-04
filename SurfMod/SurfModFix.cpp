@@ -1,22 +1,22 @@
 #include "precompiled.h"
 
-SurfMod::Fix gSurfModFix;
+surfmod::CFix g_SurfModFix;
 
-bool SurfMod::Fix::CmdStart(edict_t* player, const usercmd_s* cmd, unsigned int random_seed)
+bool surfmod::CFix::CmdStart(edict_t* player, const usercmd_s* cmd, unsigned int random_seed)
 {
 	auto UserIndex = g_engfuncs.pfnGetPlayerUserId(player);
 
 	if (UserIndex > 0)
 	{
-		this->m_player_start_velocity[UserIndex][0] = player->v.velocity.x;
-		this->m_player_start_velocity[UserIndex][1] = player->v.velocity.y;
-		this->m_player_start_velocity[UserIndex][2] = player->v.velocity.z;
+		this->m_flPlayer_start_velocity[UserIndex][0] = player->v.velocity.x;
+		this->m_flPlayer_start_velocity[UserIndex][1] = player->v.velocity.y;
+		this->m_flPlayer_start_velocity[UserIndex][2] = player->v.velocity.z;
 	}
 
 	return true;
 }
 
-bool SurfMod::Fix::CmdEnd(edict_t* player)
+bool surfmod::CFix::CmdEnd(edict_t* player)
 {
 	auto UserIndex = g_engfuncs.pfnGetPlayerUserId(player);
 	
@@ -43,16 +43,20 @@ bool SurfMod::Fix::CmdEnd(edict_t* player)
 		if (this->is_hull_vacant(playerOrigin, hull, player))
 		{
 			player->v.origin.z = player->v.origin.z + UNSTUCK_HEIGHT;
-			player->v.velocity.x = this->m_player_start_velocity[UserIndex][0];
-			player->v.velocity.y = this->m_player_start_velocity[UserIndex][1];
-			player->v.velocity.z = this->m_player_start_velocity[UserIndex][2];
+
+			if (this->m_flPlayer_start_velocity[UserIndex] != nullptr)
+			{
+				player->v.velocity.x = this->m_flPlayer_start_velocity[UserIndex][0];
+				player->v.velocity.y = this->m_flPlayer_start_velocity[UserIndex][1];
+				player->v.velocity.z = this->m_flPlayer_start_velocity[UserIndex][2];
+			}
 		}
 	}
 	
 	return true;
 }
 
-bool SurfMod::Fix::is_hull_vacant(const float origin[3], int hull, edict_t* player)
+bool surfmod::CFix::is_hull_vacant(const float origin[3], int hull, edict_t* player)
 {
 	TraceResult tr;
 
@@ -66,7 +70,7 @@ bool SurfMod::Fix::is_hull_vacant(const float origin[3], int hull, edict_t* play
 	return false;
 }
 
-bool SurfMod::Fix::is_player_on_slope(edict_t* player)
+bool surfmod::CFix::is_player_on_slope(edict_t* player)
 {
 	float traceHullEnd[3] = { 0.f }, playerOrigin[3] = { 0.f };
 	TraceResult tr;

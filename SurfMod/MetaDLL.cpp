@@ -25,7 +25,7 @@ void DLL_PRE_CmdStart(const edict_t* player, const struct usercmd_s* cmd, unsign
 	if (!FNullEnt(player))
 	{
 		auto Player = UTIL_PlayerByIndexSafe(ENTINDEX(player));
-		gSurfModFix.CmdStart(Player->edict(), cmd, random_seed);
+		g_SurfModFix.CmdStart(Player->edict(), cmd, random_seed);
 	}
 
 	RETURN_META(MRES_IGNORED);
@@ -36,7 +36,7 @@ void DLL_PRE_CmdEnd(const edict_t* player)
 	if (!FNullEnt(player))
 	{
 		auto Player = UTIL_PlayerByIndexSafe(ENTINDEX(player));
-		gSurfModFix.CmdEnd(Player->edict());
+		g_SurfModFix.CmdEnd(Player->edict());
 	}
 	
 	RETURN_META(MRES_IGNORED);
@@ -59,22 +59,22 @@ C_DLLEXPORT int GetEntityAPI2_Post(DLL_FUNCTIONS* pFunctionTable, int* interface
 
 void DLL_POST_ServerActivate(edict_t* pEdictList, int edictCount, int clientMax)
 {
-	gSurfModCommand.ServerActivate();
-	gSurfModTask.ServerActivate();
+	g_SurfModCommand.ServerActivate();
+	g_SurfModTask.ServerActivate();
 
 	RETURN_META(MRES_IGNORED);
 }
 
 void DLL_POST_ServerDeactivate(void)
 {
-	gSurfModTask.ServerDeactivate();
+	g_SurfModTask.ServerDeactivate();
 
 	RETURN_META(MRES_IGNORED);
 }
 
 void DLL_POST_StartFrame(void)
 {
-	gSurfModTask.ServerFrame();
+	g_SurfModTask.ServerFrame();
 
 	RETURN_META(MRES_IGNORED);
 }

@@ -1,8 +1,8 @@
 #include "precompiled.h"
 
-SurfMod::Utility gSurfModUtility;
+surfmod::CUtility g_SurfModUtility;
 
-void SurfMod::Utility::SayText(edict_t* pEntity, int Sender, const char* Format, ...)
+void surfmod::CUtility::SayText(edict_t* pEntity, int Sender, const char* Format, ...)
 {
 	static int iMsgSayText;
 
@@ -65,7 +65,7 @@ void SurfMod::Utility::SayText(edict_t* pEntity, int Sender, const char* Format,
 	}
 }
 
-std::vector<CBasePlayer*> SurfMod::Utility::GetPlayers(bool InGameOnly, bool ReturnBots)
+std::vector<CBasePlayer*> surfmod::CUtility::GetPlayers(bool InGameOnly, bool ReturnBots)
 {
 	std::vector<CBasePlayer*> Players;
 
@@ -98,7 +98,7 @@ std::vector<CBasePlayer*> SurfMod::Utility::GetPlayers(bool InGameOnly, bool Ret
 	return Players;
 }
 
-int SurfMod::Utility::ParseLinesAndColors(char* Buffer)
+int surfmod::CUtility::ParseLinesAndColors(char* Buffer)
 {
 	size_t len = strlen(Buffer);
 
@@ -141,7 +141,7 @@ int SurfMod::Utility::ParseLinesAndColors(char* Buffer)
 	return offs;
 }
 
-const char* SurfMod::Utility::FormatString(const char* Format, ...)
+const char* surfmod::CUtility::FormatString(const char* Format, ...)
 {
 	va_list argList;
 
@@ -156,8 +156,7 @@ const char* SurfMod::Utility::FormatString(const char* Format, ...)
 	return VarArgs;
 }
 
-// Replace all in string
-void SurfMod::Utility::ReplaceAll(std::string& String, const std::string& From, const std::string& To)
+void surfmod::CUtility::ReplaceAll(std::string& String, const std::string& From, const std::string& To)
 {
 	if (!From.empty())
 	{

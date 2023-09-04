@@ -114,7 +114,7 @@ void ReGameDLL_InternalCommand(IReGameHook_InternalCommand* chain, edict_t* pEnt
 
 	if (Player)
 	{
-		if (gSurfModCommand.ClientCommand(Player, pcmd, parg1))
+		if (g_SurfModCommand.ClientCommand(Player, pcmd, parg1))
 		{
 			return void();
 		}

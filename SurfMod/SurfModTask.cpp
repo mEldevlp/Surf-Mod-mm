@@ -1,18 +1,18 @@
 #include "precompiled.h"
 
-SurfMod::Task gSurfModTask;
+surfmod::CTask g_SurfModTask;
 
-void SurfMod::Task::ServerActivate()
+void surfmod::CTask::ServerActivate()
 {
 	this->m_Data.clear();
 }
 
-void SurfMod::Task::ServerDeactivate()
+void surfmod::CTask::ServerDeactivate()
 {
 	this->m_Data.clear();
 }
 
-void SurfMod::Task::Create(int Index, float Time, bool Loop, void* FunctionCallback, int FunctionParameter)
+void surfmod::CTask::Create(int Index, float Time, bool Loop, void* FunctionCallback, int FunctionParameter)
 {
 	if (FunctionCallback)
 	{
@@ -20,7 +20,7 @@ void SurfMod::Task::Create(int Index, float Time, bool Loop, void* FunctionCallb
 	}
 }
 
-void SurfMod::Task::Remove(int Index)
+void surfmod::CTask::Remove(int Index)
 {
 	auto it = this->m_Data.find(Index);
 
@@ -30,7 +30,7 @@ void SurfMod::Task::Remove(int Index)
 	}
 }
 
-void SurfMod::Task::ServerFrame()
+void surfmod::CTask::ServerFrame()
 {
 	for (auto it = this->m_Data.begin(); it != this->m_Data.end(); it++)
 	{
