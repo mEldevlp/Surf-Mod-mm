@@ -36,9 +36,19 @@ jobs:
       working-directory: ./SurfMod
       run: make
 
-    - name: Tag & publish to GitHub Container Registry
+    - name: Move release file to publish
       run: |
-        IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
-        VERSION=latest
-        docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-        docker push $IMAGE_ID:$VERSION
+            # Make Match BOT path
+            mkdir -p publish/addons/SurfMod/dlls
+
+            # Move released file to dlls
+            mv ./Release/SurfMod_mm.so publish/addons/SurfMod/dlls
+
+            # Copy cstrike contents to publish dir
+            #cp -ar cstrike/. publish
+            
+    - name: Deploy artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: matchbot-linux
+        path: publish/*
