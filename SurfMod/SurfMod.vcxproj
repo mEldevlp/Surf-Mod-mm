@@ -88,6 +88,9 @@
       <AdditionalDependencies>
       </AdditionalDependencies>
     </Link>
+	<PostBuildEvent>
+      <Command>.\startserver.cmd</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="MemScript.hpp" />

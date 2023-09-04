@@ -1,22 +1,2 @@
-﻿  precompiled.cpp
-  MetaDLL.cpp
-  MetaEngine.cpp
-  MetaMod.cpp
-  ReAPI.cpp
-  ReGameDLL.cpp
-  SurfModCommand.cpp
-  SurfModDuels.cpp
-  SurfModFix.cpp
-  SurfModMenu.cpp
-  SurfModPlayer.cpp
-  SurfModPlayerMenu.cpp
-  SurfModTask.cpp
-  SurfModUtils.cpp
-     Creating library C:\Users\mEl\Desktop\SurfMod\Surf-Mod-mm\Release\SurfMod_mm.lib and object C:\Users\mEl\Desktop\SurfMod\Surf-Mod-mm\Release\SurfMod_mm.exp
-  Generating code
-  0 of 556 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
-  SurfMod.vcxproj -> C:\Users\mEl\Desktop\SurfMod\Surf-Mod-mm\Release\SurfMod_mm.dll
+﻿  SurfMod.vcxproj -> C:\Users\mEl\Desktop\Surf-Mod-mm\Release\SurfMod_mm.dll
   Скопировано файлов:         1.
