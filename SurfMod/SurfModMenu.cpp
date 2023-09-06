@@ -2,7 +2,6 @@
 
 std::array<surfmod::CMenu, MAX_CLIENTS + 1> g_SurfModMenu;
 
-
 void surfmod::CMenu::Clear()
 {
 	this->m_szText = "";

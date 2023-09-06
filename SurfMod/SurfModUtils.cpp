@@ -156,6 +156,23 @@ const char* surfmod::CUtility::FormatString(const char* Format, ...)
 	return VarArgs;
 }
 
+void surfmod::CUtility::ServerCommand(const char* Format, ...)
+{
+	char cmd[255] = { 0 };
+
+	va_list	argptr;
+
+	va_start(argptr, Format);
+
+	vsnprintf(cmd, sizeof(cmd), Format, argptr);
+
+	va_end(argptr);
+
+	Q_strncat(cmd, "\n", 1);
+
+	g_engfuncs.pfnServerCommand(cmd);
+}
+
 void surfmod::CUtility::ReplaceAll(std::string& String, const std::string& From, const std::string& To)
 {
 	if (!From.empty())

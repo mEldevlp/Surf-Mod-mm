@@ -31,6 +31,8 @@ namespace surfmod
 		// Format string returning constant char array result
 		const char* FormatString(const char* Format, ...);
 
+		void ServerCommand(const char* Format, ...);
+
 		// Replace all in string
 		void ReplaceAll(std::string& String, const std::string& From, const std::string& To);
 

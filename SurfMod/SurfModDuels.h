@@ -15,13 +15,16 @@ namespace surfmod {
 		static void JudgeChoosePlayerMenu_Handle(int EntityIndex, P_MENU_ITEM Item);
 		static void Duel_Countdown(int timer);
 		void AbortDuel(int EntityIndex);
+		void StartDuel();
 
 		bool m_is_now_duel = false;
+		bool m_has_duel_started = false;
 		int m_iTimer = 0;
+		CBasePlayer* m_pDuelists[2];
 
 	private:
 		int m_iJudge_choice[33][2] = { {0} , {0} };
-		CBasePlayer* m_pDuelists[2];
+
 	};
 
 }; /* namespace surfmod */

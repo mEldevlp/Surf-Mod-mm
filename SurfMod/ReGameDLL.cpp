@@ -79,6 +79,7 @@ bool ReGameDLL_Init()
 
 	g_ReGameHookchains->InstallGameRules()->registerHook(ReGameDLL_InstallGameRules);
 	g_ReGameHookchains->InternalCommand()->registerHook(ReGameDLL_InternalCommand);
+	g_ReGameHookchains->RoundEnd()->registerHook(ReGameDLL_RoundEnd);
 
 	return true;
 }
@@ -87,10 +88,10 @@ bool ReGameDLL_Stop()
 {
 	g_ReGameHookchains->InstallGameRules()->unregisterHook(ReGameDLL_InstallGameRules);
 	g_ReGameHookchains->InternalCommand()->unregisterHook(ReGameDLL_InternalCommand);
+	g_ReGameHookchains->RoundEnd()->unregisterHook(ReGameDLL_RoundEnd);
 
 	return true;
 }
-
 
 CGameRules *ReGameDLL_InstallGameRules(IReGameHook_InstallGameRules* chain)
 {
@@ -121,4 +122,14 @@ void ReGameDLL_InternalCommand(IReGameHook_InternalCommand* chain, edict_t* pEnt
 	}
 
 	chain->callNext(pEntity, pcmd, parg1);
+}
+
+bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEventEndRound event, float tmDelay)
+{
+	if (g_SurfModDuel.m_is_now_duel)
+	{
+
+	}
+
+	chain->callNext(winStatus, event, tmDelay);
 }
