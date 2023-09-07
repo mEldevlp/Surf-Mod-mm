@@ -1,8 +1,9 @@
 #pragma once
 
 constexpr auto TASK_MATCH_START = 1337;
+constexpr auto TASK_HUD_STOP = 1338;
 
-namespace SurfMod {
+namespace surfmod {
 	typedef struct S_TASK_INFO {
 		int				Index;
 		float			Time;
@@ -13,7 +14,7 @@ namespace SurfMod {
 		int				FunctionParameter;
 	} P_TASK_INFO, * LP_TASK_INFO;
 
-	class Task {
+	class CTask {
 	public:
 		void ServerActivate();
 		void ServerDeactivate();
@@ -25,6 +26,7 @@ namespace SurfMod {
 	private:
 		std::unordered_map<int, P_TASK_INFO> m_Data;
 	};
-};
 
-extern SurfMod::Task gSurfModTask;
+}; /* namespace surfmod */
+
+extern surfmod::CTask g_SurfModTask;

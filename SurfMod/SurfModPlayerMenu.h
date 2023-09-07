@@ -1,14 +1,15 @@
 #pragma once
 
-namespace SurfMod
+namespace surfmod
 {
-	class PlayerMenu
+	class CPlayerMenu
 	{
 	public:
 		// Main Menu
 		void MainMenu(int EntityIndex);
 		static void MainMenu_Handle(int EntityIndex, P_MENU_ITEM Item);
 	};
-}
 
-extern SurfMod::PlayerMenu gSurfModPlayerMenu;
+}; /* namespace surfmod */
+
+extern surfmod::CPlayerMenu g_SurfModPlayerMenu;

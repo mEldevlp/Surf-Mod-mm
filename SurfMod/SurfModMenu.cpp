@@ -1,62 +1,61 @@
 #include "precompiled.h"
 
-std::array<SurfMod::Menu, MAX_CLIENTS + 1> gSurfModmenu;
+std::array<surfmod::CMenu, MAX_CLIENTS + 1> g_SurfModMenu;
 
-
-void SurfMod::Menu::Clear()
+void surfmod::CMenu::Clear()
 {
-	this->m_Text = "";
+	this->m_szText = "";
 
 	this->m_Data.clear();
 
-	this->m_Page = -1;
+	this->m_iPage = -1;
 
-	this->m_Exit = false;
+	this->m_bExit = false;
 
-	this->m_Func = nullptr;
+	this->m_vpFunc = nullptr;
 }
 
-void SurfMod::Menu::Create(std::string Title, bool Exit, void* CallbackFunction)
+void surfmod::CMenu::Create(std::string Title, bool Exit, void* CallbackFunction)
 {
 	this->Clear();
 
-	gSurfModUtility.ReplaceAll(Title, "^w", "\\w");
-	gSurfModUtility.ReplaceAll(Title, "^y", "\\y");
-	gSurfModUtility.ReplaceAll(Title, "^r", "\\r");
-	gSurfModUtility.ReplaceAll(Title, "^R", "\\R");
+	g_SurfModUtility.ReplaceAll(Title, "^w", "\\w");
+	g_SurfModUtility.ReplaceAll(Title, "^y", "\\y");
+	g_SurfModUtility.ReplaceAll(Title, "^r", "\\r");
+	g_SurfModUtility.ReplaceAll(Title, "^R", "\\R");
 
-	this->m_Text = Title;
+	this->m_szText = Title;
 
-	this->m_Page = -1;
+	this->m_iPage = -1;
 
-	this->m_Exit = Exit;
+	this->m_bExit = Exit;
 
-	this->m_Func = CallbackFunction;
+	this->m_vpFunc = CallbackFunction;
 }
 
-void SurfMod::Menu::AddItem(int Info, std::string Text)
+void surfmod::CMenu::AddItem(int Info, std::string Text)
 {
 	this->AddItem(Info, Text, false, 0);
 }
 
-void SurfMod::Menu::AddItem(int Info, std::string Text, bool Disabled)
+void surfmod::CMenu::AddItem(int Info, std::string Text, bool Disabled)
 {
 	this->AddItem(Info, Text, Disabled, 0);
 }
 
-void SurfMod::Menu::AddItem(int Info, std::string Text, bool Disabled, int Extra)
+void surfmod::CMenu::AddItem(int Info, std::string Text, bool Disabled, int Extra)
 {
-	gSurfModUtility.ReplaceAll(Text, "^w", "\\w");
-	gSurfModUtility.ReplaceAll(Text, "^y", "\\y");
-	gSurfModUtility.ReplaceAll(Text, "^r", "\\r");
-	gSurfModUtility.ReplaceAll(Text, "^R", "\\R");
+	g_SurfModUtility.ReplaceAll(Text, "^w", "\\w");
+	g_SurfModUtility.ReplaceAll(Text, "^y", "\\y");
+	g_SurfModUtility.ReplaceAll(Text, "^r", "\\r");
+	g_SurfModUtility.ReplaceAll(Text, "^R", "\\R");
 
 	P_MENU_ITEM ItemData = { Info, Text, Disabled, Extra };
 
 	this->m_Data.push_back(ItemData);
 }
 
-void SurfMod::Menu::Show(int EntityIndex)
+void surfmod::CMenu::Show(int EntityIndex)
 {
 	if (this->m_Data.size())
 	{
@@ -64,9 +63,9 @@ void SurfMod::Menu::Show(int EntityIndex)
 	}
 }
 
-void SurfMod::Menu::Hide(int EntityIndex)
+void surfmod::CMenu::Hide(int EntityIndex)
 {
-	this->m_Page = -1;
+	this->m_iPage = -1;
 
 	auto Player = UTIL_PlayerByIndexSafe(EntityIndex);
 
@@ -91,9 +90,9 @@ void SurfMod::Menu::Hide(int EntityIndex)
 	}
 }
 
-bool SurfMod::Menu::Handle(int EntityIndex, int Key)
+bool surfmod::CMenu::Handle(int EntityIndex, int Key)
 {
-	if (this->m_Page != -1)
+	if (this->m_iPage != -1)
 	{
 		auto Player = UTIL_PlayerByIndexSafe(EntityIndex);
 
@@ -103,23 +102,23 @@ bool SurfMod::Menu::Handle(int EntityIndex, int Key)
 			{
 				if (Key == 9)
 				{
-					this->Display(EntityIndex, ++this->m_Page);
+					this->Display(EntityIndex, ++this->m_iPage);
 				}
 				else if (Key == 10)
 				{
-					this->Display(EntityIndex, --this->m_Page);
+					this->Display(EntityIndex, --this->m_iPage);
 				}
 				else
 				{
-					unsigned int ItemIndex = (Key + (this->m_Page * this->m_PageOption)) - 1;
+					unsigned int ItemIndex = (Key + (this->m_iPage * this->m_iPageOption)) - 1;
 
 					if (ItemIndex < this->m_Data.size())
 					{
 						this->Hide(EntityIndex);
 
-						if (this->m_Func)
+						if (this->m_vpFunc)
 						{
-							reinterpret_cast<void(*)(int, P_MENU_ITEM)>(this->m_Func)(EntityIndex, this->m_Data[ItemIndex]);
+							reinterpret_cast<void(*)(int, P_MENU_ITEM)>(this->m_vpFunc)(EntityIndex, this->m_Data[ItemIndex]);
 						}
 					}
 				}
@@ -128,7 +127,7 @@ bool SurfMod::Menu::Handle(int EntityIndex, int Key)
 			}
 			else
 			{
-				this->m_Page = -1;
+				this->m_iPage = -1;
 			}
 		}
 	}
@@ -136,48 +135,35 @@ bool SurfMod::Menu::Handle(int EntityIndex, int Key)
 	return false;
 }
 
-void SurfMod::Menu::Display(int EntityIndex, int Page)
+void surfmod::CMenu::Display(int EntityIndex, int Page)
 {
 	if (Page < 0)
 	{
 		Page = 0;
 
-		this->m_Page = 0;
+		this->m_iPage = 0;
 
-		if (this->m_Exit)
+		if (this->m_bExit)
 		{
-			this->m_Page = -1;
+			this->m_iPage = -1;
 			return;
 		}
 	}
 	else
 	{
-		this->m_Page = Page;
+		this->m_iPage = Page;
 	}
 
-	unsigned int Start = (Page * this->m_PageOption);
+	unsigned int Start = (Page * this->m_iPageOption);
 
 	if (Start >= this->m_Data.size())
 	{
-		Start = Page = this->m_Page = 0;
+		Start = Page = this->m_iPage = 0;
 	}
 
-	//auto PageCount = (int)this->m_Data.size() > this->m_PageOption ? (this->m_Data.size() / this->m_PageOption + ((this->m_Data.size() % this->m_PageOption) ? 1 : 0)) : 1;
+	std::string MenuText = this->m_szText;
 
-	std::string MenuText = "";
-
-	MenuText = this->m_Text;
-
-	/* до лучших времён
-	if (PageCount > 1)
-	{
-		MenuText += "\\R";
-		MenuText += std::to_string(Page + 1);
-		MenuText += "/";
-		MenuText += std::to_string(PageCount);
-	}*/
-
-	unsigned int End = (Start + this->m_PageOption);
+	unsigned int End = (Start + this->m_iPageOption);
 
 	if (End > this->m_Data.size())
 	{
@@ -189,11 +175,10 @@ void SurfMod::Menu::Display(int EntityIndex, int Page)
 
 	for (unsigned int b = Start; b < End; b++)
 	{
-		Slots |= (1 << BitSum);
+		Slots |= (1 << BitSum++);
 
-		MenuText += "\\r[\\w";
-		MenuText += std::to_string(++BitSum);
-		MenuText += this->m_Data[b].Disabled ? "\\r]\\d " : "\\r]\\w ";
+		MenuText += "\\r[";
+		MenuText += this->m_Data[b].Disabled ? _TXT("\\d#\\r]\\d ") : _TXT("\\w%d\\r]\\w ", BitSum);
 		MenuText += this->m_Data[b].Text;
 		MenuText += "\n";
 	}
@@ -210,7 +195,7 @@ void SurfMod::Menu::Display(int EntityIndex, int Page)
 		{
 			MenuText += "\n\\r[\\w9\\r]\\w Next";
 
-			if (this->m_Exit)
+			if (this->m_bExit)
 			{
 				MenuText += "\n\\r[\\w0\\r]\\w Exit";
 			}
@@ -224,7 +209,7 @@ void SurfMod::Menu::Display(int EntityIndex, int Page)
 		}
 		else
 		{
-			if (this->m_Exit)
+			if (this->m_bExit)
 			{
 				MenuText += "\n\\r[\\w0\\r]\\w Exit";
 			}
@@ -234,7 +219,7 @@ void SurfMod::Menu::Display(int EntityIndex, int Page)
 	this->ShowMenu(EntityIndex, Slots, -1, MenuText);
 }
 
-void SurfMod::Menu::ShowMenu(int EntityIndex, int Slots, int Time, std::string Text)
+void surfmod::CMenu::ShowMenu(int EntityIndex, int Slots, int Time, std::string Text)
 {
 	auto Player = UTIL_PlayerByIndexSafe(EntityIndex);
 

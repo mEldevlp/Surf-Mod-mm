@@ -8,9 +8,9 @@ constexpr auto UNSTUCK_HEIGHT = 0.001f;
 #define HULL_LARGE                      2
 #define HULL_HEAD                       3
 
-namespace SurfMod
+namespace surfmod
 {
-	class Fix
+	class CFix
 	{
 	public:
 		bool CmdStart(edict_t* player, const struct usercmd_s* cmd, unsigned int random_seed);
@@ -20,8 +20,9 @@ namespace SurfMod
 		bool is_hull_vacant(const float origin[3], int hull, edict_t* player);
 		bool is_player_on_slope(edict_t* player);	
 
-		vec_t m_player_start_velocity[32][3];
+		vec_t m_flPlayer_start_velocity[32][3];
 	};
-};
 
-extern SurfMod::Fix gSurfModFix;
+}; /* namespace surfmod */
+
+extern surfmod::CFix g_SurfModFix;

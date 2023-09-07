@@ -43,5 +43,5 @@ jobs:
     - name: Deploy artifacts
       uses: actions/upload-artifact@main
       with:
-        name: matchbot-windows
+        name: SurfMod-windows
         path: publish/*
