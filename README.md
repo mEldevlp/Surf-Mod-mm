@@ -1,6 +1,8 @@
 ## Surf Mod
 
-[![Linux](https://github.com/mEldevlp/Surf-Mod-mm/actions/workflows/makefile.yml/badge.svg)](https://github.com/mEldevlp/Surf-Mod-mm/actions/workflows/makefile.yml) &nbsp; [![Windows](https://github.com/mEldevlp/Surf-Mod-mm/actions/workflows/msbuild.yml/badge.svg)](https://github.com/mEldevlp/Surf-Mod-mm/actions/workflows/msbuild.yml)
+[![Linux Build CI](https://github.com/mEldevlp/Surf-Mod-mm/actions/workflows/makefile.yml/badge.svg?branch=dev)](https://github.com/mEldevlp/Surf-Mod-mm/actions/workflows/makefile.yml)
+&nbsp;
+[![Windows Build CI](https://github.com/mEldevlp/Surf-Mod-mm/actions/workflows/msbuild.yml/badge.svg?branch=dev)](https://github.com/mEldevlp/Surf-Mod-mm/actions/workflows/msbuild.yml)
 
 - [x] Remove Surf stuck
 - [ ] Surf Duel System
