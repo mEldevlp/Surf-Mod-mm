@@ -5,7 +5,7 @@ surfmod::CPlayerMenu g_SurfModPlayerMenu;
 void surfmod::CPlayerMenu::MainMenu(int EntityIndex)
 {
 	// Menu
-	g_SurfModMenu[EntityIndex].Create("Surf Mod Main Menu", true, (void*)this->MainMenu_Handle);
+	g_SurfModMenu[EntityIndex].Create("Surf Mod Main Menu\n", true, (void*)this->MainMenu_Handle);
 
 	// Kick Option
 	g_SurfModMenu[EntityIndex].AddItem(0, "Kick Player");

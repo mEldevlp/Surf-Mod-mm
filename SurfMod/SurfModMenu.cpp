@@ -161,20 +161,7 @@ void surfmod::CMenu::Display(int EntityIndex, int Page)
 		Start = Page = this->m_iPage = 0;
 	}
 
-	//auto PageCount = (int)this->m_Data.size() > this->m_iPageOption ? (this->m_Data.size() / this->m_iPageOption + ((this->m_Data.size() % this->m_iPageOption) ? 1 : 0)) : 1;
-
-	std::string MenuText = "";
-
-	MenuText = this->m_szText;
-
-	/* до лучших времён
-	if (PageCount > 1)
-	{
-		MenuText += "\\R";
-		MenuText += std::to_string(Page + 1);
-		MenuText += "/";
-		MenuText += std::to_string(PageCount);
-	}*/
+	std::string MenuText = this->m_szText;
 
 	unsigned int End = (Start + this->m_iPageOption);
 
@@ -188,11 +175,10 @@ void surfmod::CMenu::Display(int EntityIndex, int Page)
 
 	for (unsigned int b = Start; b < End; b++)
 	{
-		Slots |= (1 << BitSum);
+		Slots |= (1 << BitSum++);
 
-		MenuText += "\\r[\\w";
-		MenuText += std::to_string(++BitSum);
-		MenuText += this->m_Data[b].Disabled ? "\\r]\\d " : "\\r]\\w ";
+		MenuText += "\\r[";
+		MenuText += this->m_Data[b].Disabled ? _TXT("\\d#\\r]\\d ") : _TXT("\\w%d\\r]\\w ", BitSum);
 		MenuText += this->m_Data[b].Text;
 		MenuText += "\n";
 	}

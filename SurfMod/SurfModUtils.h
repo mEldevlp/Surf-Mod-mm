@@ -39,6 +39,15 @@ namespace surfmod
 		// New Lines and colors
 		int ParseLinesAndColors(char* Buffer);
 
+		unsigned short FixedUnsigned16(float value, float scale);
+		short surfmod::CUtility::FixedSigned16(float value, float scale);
+
+		// Set hudmessage parameters
+		hudtextparms_t HudParam(int red, int green, int blue, float x, float y, int effects, float fxtime, float holdtime, float fadeintime, float fadeouttime, int channel);
+
+		// Send hudmessage
+		void HudMessage(edict_t* pEntity, hudtextparms_t textparms, const char* Format, ...);
+
 	private:
 		// Variables Pointer
 		std::map<std::string, cvar_t> m_CvarData;

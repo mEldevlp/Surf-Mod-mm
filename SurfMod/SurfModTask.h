@@ -1,6 +1,7 @@
 #pragma once
 
 constexpr auto TASK_MATCH_START = 1337;
+constexpr auto TASK_HUD_STOP = 1338;
 
 namespace surfmod {
 	typedef struct S_TASK_INFO {
