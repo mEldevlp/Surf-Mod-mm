@@ -3,6 +3,7 @@
 #pragma region DLL_PRE
 void DLL_PRE_CmdStart(const edict_t* player, const struct usercmd_s* cmd, unsigned int random_seed);
 void DLL_PRE_CmdEnd(const edict_t* player);
+void DLL_PRE_ClientDisconnect(edict_t* player);
 #pragma endregion
 
 #pragma region DLL_POST

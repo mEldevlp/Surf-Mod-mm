@@ -5,7 +5,7 @@ namespace surfmod {
 	enum CONSOLE_COMMANDS {
 		MENUSELECT,
 		CHOOSETEAM,
-		JUDGE_MENU
+		SURF_DUEL
 	};
 
 	class CCommand

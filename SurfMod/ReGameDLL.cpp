@@ -80,6 +80,7 @@ bool ReGameDLL_Init()
 	g_ReGameHookchains->InstallGameRules()->registerHook(ReGameDLL_InstallGameRules);
 	g_ReGameHookchains->InternalCommand()->registerHook(ReGameDLL_InternalCommand);
 	g_ReGameHookchains->RoundEnd()->registerHook(ReGameDLL_RoundEnd);
+	g_ReGameHookchains->HandleMenu_ChooseTeam()->registerHook(ReGameDLL_ChooseTeam);
 
 	return true;
 }
@@ -89,6 +90,7 @@ bool ReGameDLL_Stop()
 	g_ReGameHookchains->InstallGameRules()->unregisterHook(ReGameDLL_InstallGameRules);
 	g_ReGameHookchains->InternalCommand()->unregisterHook(ReGameDLL_InternalCommand);
 	g_ReGameHookchains->RoundEnd()->unregisterHook(ReGameDLL_RoundEnd);
+	g_ReGameHookchains->HandleMenu_ChooseTeam()->unregisterHook(ReGameDLL_ChooseTeam);
 
 	return true;
 }
@@ -177,4 +179,32 @@ bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEven
 	}
 
 	return chain->callNext(winStatus, event, tmDelay);
+}
+
+BOOL ReGameDLL_ChooseTeam(IReGameHook_HandleMenu_ChooseTeam* chain, CBasePlayer* pPlayer, int slot)
+{
+	if (g_SurfModDuel.m_pDuel_info.is_now_duel)
+	{
+		switch (pPlayer->m_iTeam)
+		{
+			case TeamName::UNASSIGNED:
+			{
+				pPlayer->CSPlayer()->JoinTeam(TeamName::SPECTATOR);
+				g_SurfModUtility.SayText(pPlayer->edict(), PRINT_TEAM_RED, "^3You've been moved to spectators because ^4the duel ^3is going up.");
+				break;
+			}
+			case TeamName::SPECTATOR:
+			{
+				g_SurfModUtility.SayText(pPlayer->edict(), PRINT_TEAM_RED, "^3You can't choose a team because ^4the duel ^3is going up.");
+				break;
+			}
+			default: // for duelists
+			{
+				g_SurfModUtility.SayText(pPlayer->edict(), PRINT_TEAM_RED, "^3You can't change team. ^1Type ^4/surrender ^1 to lose duel.");
+				return 1;
+			}
+		}
+	}
+
+	return chain->callNext(pPlayer, slot);
 }
