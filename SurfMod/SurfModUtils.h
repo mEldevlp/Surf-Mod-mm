@@ -40,13 +40,15 @@ namespace surfmod
 		int ParseLinesAndColors(char* Buffer);
 
 		unsigned short FixedUnsigned16(float value, float scale);
-		short surfmod::CUtility::FixedSigned16(float value, float scale);
+		short FixedSigned16(float value, float scale);
 
 		// Set hudmessage parameters
 		hudtextparms_t HudParam(int red, int green, int blue, float x, float y, int effects, float fxtime, float holdtime, float fadeintime, float fadeouttime, int channel);
 
 		// Send hudmessage
 		void HudMessage(edict_t* pEntity, hudtextparms_t textparms, const char* Format, ...);
+
+		char m_GameDesc[32] = { 0 };
 
 	private:
 		// Variables Pointer

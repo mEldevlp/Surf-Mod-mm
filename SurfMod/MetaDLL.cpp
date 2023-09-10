@@ -14,6 +14,7 @@ C_DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS* pFunctionTable, int* interfaceVersi
 	gDLL_FunctionTable_Pre.pfnCmdStart = DLL_PRE_CmdStart;
 	gDLL_FunctionTable_Pre.pfnCmdEnd = DLL_PRE_CmdEnd;
 
+	gDLL_FunctionTable_Pre.pfnClientDisconnect = DLL_PRE_ClientDisconnect;
 
 	memcpy(pFunctionTable, &gDLL_FunctionTable_Pre, sizeof(DLL_FUNCTIONS));
 
@@ -39,6 +40,24 @@ void DLL_PRE_CmdEnd(const edict_t* player)
 		g_SurfModFix.CmdEnd(Player->edict());
 	}
 	
+	RETURN_META(MRES_IGNORED);
+}
+
+void DLL_PRE_ClientDisconnect(edict_t* player)
+{
+	if (g_SurfModDuel.m_pDuel_info.is_now_duel)
+	{
+		if (ENTINDEX(player) == g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT].id)
+		{
+			g_SurfModDuel.DuelPause(&g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT]);
+			//g_SurfModDuel.ClientDisconnect(&g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT]);
+		}
+		else if (ENTINDEX(player) == g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER].id)
+		{
+			g_SurfModDuel.DuelPause(&g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER]);
+		}
+	}
+
 	RETURN_META(MRES_IGNORED);
 }
 #pragma endregion

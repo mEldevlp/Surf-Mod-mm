@@ -4,10 +4,10 @@ plugin_info_t Plugin_info =
 {
 	META_INTERFACE_VERSION,
 	"Surf Mod",
-	"1.1.0",
+	"1.0.0",
 	__DATE__,
 	"mEldevlp",
-	"http://amxxmodx.ru/",
+	"https://alliedmods.net/",
 	"SURFMOD",
 	PT_ANYTIME,
 	PT_ANYTIME,

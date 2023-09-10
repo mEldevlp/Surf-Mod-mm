@@ -33,7 +33,7 @@ bool surfmod::CCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, con
 
 			break;
 		}
-		case CONSOLE_COMMANDS::JUDGE_MENU:
+		case CONSOLE_COMMANDS::SURF_DUEL:
 		{
 			g_SurfModDuel.JudgeMenuMain(Player->entindex());
 			return true;
@@ -49,9 +49,9 @@ surfmod::CONSOLE_COMMANDS surfmod::CCommand::get_UserCommand(const char* pcmd)
 	{
 		return CONSOLE_COMMANDS::MENUSELECT;
 	}
-	else if (!Q_strcmp(pcmd, "judge"))
+	else if (!Q_strcmp(pcmd, "surfduel"))
 	{
-		return CONSOLE_COMMANDS::JUDGE_MENU;
+		return CONSOLE_COMMANDS::SURF_DUEL;
 	}
 }
 
