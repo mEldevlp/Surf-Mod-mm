@@ -47,13 +47,14 @@ void DLL_PRE_ClientDisconnect(edict_t* player)
 {
 	if (g_SurfModDuel.m_pDuel_info.is_now_duel)
 	{
-		if (ENTINDEX(player) == g_SurfModDuel.m_pDuel_info.player_ct.id)
+		if (ENTINDEX(player) == g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT].id)
 		{
-			g_SurfModDuel.DuelPause(&g_SurfModDuel.m_pDuel_info.player_ct);
+			g_SurfModDuel.DuelPause(&g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT]);
+			//g_SurfModDuel.ClientDisconnect(&g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT]);
 		}
-		else if (ENTINDEX(player) == g_SurfModDuel.m_pDuel_info.player_ter.id)
+		else if (ENTINDEX(player) == g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER].id)
 		{
-			g_SurfModDuel.DuelPause(&g_SurfModDuel.m_pDuel_info.player_ter);
+			g_SurfModDuel.DuelPause(&g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER]);
 		}
 	}
 

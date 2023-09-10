@@ -81,6 +81,7 @@ bool ReGameDLL_Init()
 	g_ReGameHookchains->InternalCommand()->registerHook(ReGameDLL_InternalCommand);
 	g_ReGameHookchains->RoundEnd()->registerHook(ReGameDLL_RoundEnd);
 	g_ReGameHookchains->HandleMenu_ChooseTeam()->registerHook(ReGameDLL_ChooseTeam);
+	g_ReGameHookchains->CSGameRules_RestartRound()->registerHook(ReGameDLL_RestartRound);
 
 	return true;
 }
@@ -91,6 +92,7 @@ bool ReGameDLL_Stop()
 	g_ReGameHookchains->InternalCommand()->unregisterHook(ReGameDLL_InternalCommand);
 	g_ReGameHookchains->RoundEnd()->unregisterHook(ReGameDLL_RoundEnd);
 	g_ReGameHookchains->HandleMenu_ChooseTeam()->unregisterHook(ReGameDLL_ChooseTeam);
+	g_ReGameHookchains->CSGameRules_RestartRound()->unregisterHook(ReGameDLL_RestartRound);
 
 	return true;
 }
@@ -126,6 +128,8 @@ void ReGameDLL_InternalCommand(IReGameHook_InternalCommand* chain, edict_t* pEnt
 	chain->callNext(pEntity, pcmd, parg1);
 }
 
+#define SCORE_TO_WIN 5
+
 bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEventEndRound event, float tmDelay)
 {
 	if (!g_SurfModDuel.m_pDuel_info.is_now_duel)
@@ -133,48 +137,38 @@ bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEven
 		return chain->callNext(winStatus, event, tmDelay);
 	}
 
-	int& ct_score = g_SurfModDuel.m_pDuel_info.player_ct.score;
-	int& ter_score = g_SurfModDuel.m_pDuel_info.player_ter.score;
-
-	// Block messages "Terrorist Win and CT Win etc"
-	static int iMsgTextMsg = gpMetaUtilFuncs->pfnGetUserMsgID(PLID, "TextMsg", nullptr);
-	g_engfuncs.pfnMessageBegin(MSG_BROADCAST, iMsgTextMsg, nullptr, nullptr);
-	g_engfuncs.pfnWriteByte(PRINT_CENTER);
-	g_engfuncs.pfnMessageEnd();
+	int& ct_score = g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT].score;
+	int& ter_score = g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER].score;
 
 	switch (event)
 	{
 		case ScenarioEventEndRound::ROUND_CTS_WIN:
 		{
-			g_SurfModUtility.HudMessage(nullptr, g_SurfModUtility.HudParam(50, 200, 255, -1.f, 0.3f, 1, 13.f, 5.f, 0.f, 0.f, 1),
-				_TXT("%s WIN THE ROUND", g_SurfModDuel.m_pDuel_info.player_ct.name));
 			++ct_score;
 			break;
 		}
 		case ScenarioEventEndRound::ROUND_TERRORISTS_WIN:
 		{
-			g_SurfModUtility.HudMessage(nullptr, g_SurfModUtility.HudParam(220, 40, 40, -1.f, 0.3f, 1, 13.f, 5.f, 0.f, 0.f, 1),
-				_TXT("%s WIN THE ROUND", g_SurfModDuel.m_pDuel_info.player_ter.name));
 			++ter_score;
 			break;
 		}
 		default: break;
 	}
 
-	if (ct_score >= 10 && (ct_score - ter_score) >= 2)
+	if (ct_score >= SCORE_TO_WIN && (ct_score - ter_score) >= 2)
 	{
-		g_SurfModDuel.DuelWon(&g_SurfModDuel.m_pDuel_info.player_ct);
+		g_SurfModDuel.DuelWon(&g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT]);
 	}
-	else if (ter_score >= 10 && (ter_score - ct_score) >= 2)
+	else if (ter_score >= SCORE_TO_WIN && (ter_score - ct_score) >= 2)
 	{
-		g_SurfModDuel.DuelWon(&g_SurfModDuel.m_pDuel_info.player_ter);
+		g_SurfModDuel.DuelWon(&g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER]);
 	}
 	else
 	{
 		if ((ct_score + ter_score) != 0)
 		{
-			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_BLUE, _TXT("^3%s ^1- ^4%d", g_SurfModDuel.m_pDuel_info.player_ct.name, ct_score));
-			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_RED, _TXT("^3%s ^1- ^4%d", g_SurfModDuel.m_pDuel_info.player_ter.name, ter_score));
+			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_BLUE, _TXT("^3%s ^1- ^4%d", g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT].name, ct_score));
+			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_RED, _TXT("^3%s ^1- ^4%d", g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER].name, ter_score));
 		}
 	}
 
@@ -207,4 +201,11 @@ BOOL ReGameDLL_ChooseTeam(IReGameHook_HandleMenu_ChooseTeam* chain, CBasePlayer*
 	}
 
 	return chain->callNext(pPlayer, slot);
+}
+
+void ReGameDLL_RestartRound(IReGameHook_CSGameRules_RestartRound* chain)
+{
+	chain->callNext();
+
+	g_SurfModDuel.RoundRestart();
 }

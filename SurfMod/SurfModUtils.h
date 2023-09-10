@@ -48,6 +48,8 @@ namespace surfmod
 		// Send hudmessage
 		void HudMessage(edict_t* pEntity, hudtextparms_t textparms, const char* Format, ...);
 
+		char m_GameDesc[32] = { 0 };
+
 	private:
 		// Variables Pointer
 		std::map<std::string, cvar_t> m_CvarData;
