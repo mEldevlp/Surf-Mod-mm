@@ -10,4 +10,5 @@ void DLL_PRE_ClientDisconnect(edict_t* player);
 void DLL_POST_ServerActivate(edict_t* pEdictList, int edictCount, int clientMax);
 void DLL_POST_ServerDeactivate(void);
 void DLL_POST_StartFrame(void);
+void DLL_POST_ClientPutInServer(edict_t* player);
 #pragma endregion

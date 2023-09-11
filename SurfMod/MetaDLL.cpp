@@ -45,18 +45,7 @@ void DLL_PRE_CmdEnd(const edict_t* player)
 
 void DLL_PRE_ClientDisconnect(edict_t* player)
 {
-	if (g_SurfModDuel.m_pDuel_info.is_now_duel)
-	{
-		if (ENTINDEX(player) == g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT].id)
-		{
-			g_SurfModDuel.DuelPause(&g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT]);
-			//g_SurfModDuel.ClientDisconnect(&g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT]);
-		}
-		else if (ENTINDEX(player) == g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER].id)
-		{
-			g_SurfModDuel.DuelPause(&g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER]);
-		}
-	}
+	g_SurfModDuel.ClientDisconnect(player);
 
 	RETURN_META(MRES_IGNORED);
 }
@@ -70,6 +59,8 @@ C_DLLEXPORT int GetEntityAPI2_Post(DLL_FUNCTIONS* pFunctionTable, int* interface
 	gDLL_FunctionTable_Post.pfnServerActivate = DLL_POST_ServerActivate;
 	gDLL_FunctionTable_Post.pfnServerDeactivate = DLL_POST_ServerDeactivate;
 	gDLL_FunctionTable_Post.pfnStartFrame = DLL_POST_StartFrame;
+
+	gDLL_FunctionTable_Post.pfnClientPutInServer = DLL_POST_ClientPutInServer;
 
 	memcpy(pFunctionTable, &gDLL_FunctionTable_Post, sizeof(DLL_FUNCTIONS));
 
@@ -94,6 +85,26 @@ void DLL_POST_ServerDeactivate(void)
 void DLL_POST_StartFrame(void)
 {
 	g_SurfModTask.ServerFrame();
+
+	RETURN_META(MRES_IGNORED);
+}
+
+void DLL_POST_ClientPutInServer(edict_t* player)
+{
+	if (g_SurfModDuel.m_pDuel_info.state == surfmod::DUEL_STATE::PAUSE)
+	{
+		const char* steamid = g_engfuncs.pfnGetPlayerAuthId(player);
+		int player_id = ENTINDEX(player);
+
+		if (!Q_strcmp(steamid, g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT].auth_id.c_str()))
+		{
+			g_SurfModDuel.DuelistComeback(player_id, surfmod::Team::CT);
+		}
+		else if (!Q_strcmp(steamid, g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER].auth_id.c_str()))
+		{
+			g_SurfModDuel.DuelistComeback(player_id, surfmod::Team::TER);
+		}
+	}
 
 	RETURN_META(MRES_IGNORED);
 }

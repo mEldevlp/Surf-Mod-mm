@@ -14,3 +14,4 @@ void ReGameDLL_InternalCommand(IReGameHook_InternalCommand* chain, edict_t* pEnt
 bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEventEndRound event, float tmDelay);
 BOOL ReGameDLL_ChooseTeam(IReGameHook_HandleMenu_ChooseTeam* chain, CBasePlayer* pPlayer, int slot);
 void ReGameDLL_RestartRound(IReGameHook_CSGameRules_RestartRound* chain);
+void ReGameDLL_RoundRespawn(IReGameHook_CBasePlayer_RoundRespawn* chain, CBasePlayer* pPlayer);

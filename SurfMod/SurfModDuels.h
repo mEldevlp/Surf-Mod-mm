@@ -6,6 +6,7 @@ namespace surfmod
 		NOTHING,
 		PREPARING,
 		PAUSE,
+		UNPAUSE,
 		GOING,
 		WINING
 	};
@@ -22,6 +23,7 @@ namespace surfmod
 		const char* name;
 		TeamName team;
 		int id;
+		std::string auth_id;
 		int score;
 		int print_team;
 
@@ -32,6 +34,7 @@ namespace surfmod
 			this->name = STRING(this->base->edict()->v.netname);
 			this->team = static_cast<TeamName>(player_team);
 			this->id = player_id;
+			this->auth_id = g_engfuncs.pfnGetPlayerAuthId(this->base->edict());
 			this->score = 0;
 			this->print_team = player_team == Team::CT ? PRINT_TEAM_BLUE : PRINT_TEAM_RED;
 		}
@@ -58,6 +61,11 @@ namespace surfmod
 		void StartDuel();
 		void DuelWon(duel_player_t* player);
 		void DuelPause(duel_player_t* player);
+		static void DuelUnpause(int time);
+
+		void DuelistComeback(int player_id, Team player_team);
+
+		void ClientDisconnect(edict_t* player);
 
 		void State(DUEL_STATE state);
 
@@ -67,7 +75,10 @@ namespace surfmod
 		void RoundRestart();
 
 	private:
+		bool is_duelist_disconnected(const char* steamid, Team* player_team);
+
 		int m_iJudge_choice[33][2] = { {0} , {0} };
+		int m_iJudge_id[33];
 		int m_iRestart_times;
 	};
 

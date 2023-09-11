@@ -82,7 +82,7 @@ bool ReGameDLL_Init()
 	g_ReGameHookchains->RoundEnd()->registerHook(ReGameDLL_RoundEnd);
 	g_ReGameHookchains->HandleMenu_ChooseTeam()->registerHook(ReGameDLL_ChooseTeam);
 	g_ReGameHookchains->CSGameRules_RestartRound()->registerHook(ReGameDLL_RestartRound);
-
+	g_ReGameHookchains->CBasePlayer_RoundRespawn()->registerHook(ReGameDLL_RoundRespawn);
 	return true;
 }
 
@@ -93,6 +93,7 @@ bool ReGameDLL_Stop()
 	g_ReGameHookchains->RoundEnd()->unregisterHook(ReGameDLL_RoundEnd);
 	g_ReGameHookchains->HandleMenu_ChooseTeam()->unregisterHook(ReGameDLL_ChooseTeam);
 	g_ReGameHookchains->CSGameRules_RestartRound()->unregisterHook(ReGameDLL_RestartRound);
+	g_ReGameHookchains->CBasePlayer_RoundRespawn()->unregisterHook(ReGameDLL_RoundRespawn);
 
 	return true;
 }
@@ -128,13 +129,20 @@ void ReGameDLL_InternalCommand(IReGameHook_InternalCommand* chain, edict_t* pEnt
 	chain->callNext(pEntity, pcmd, parg1);
 }
 
-#define SCORE_TO_WIN 5
+#define SCORE_TO_WIN 10
 
 bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEventEndRound event, float tmDelay)
 {
+	auto roundend = chain->callNext(winStatus, event, tmDelay);
+
 	if (!g_SurfModDuel.m_pDuel_info.is_now_duel)
 	{
-		return chain->callNext(winStatus, event, tmDelay);
+		return roundend;
+	}
+
+	if (g_SurfModDuel.m_pDuel_info.state == surfmod::DUEL_STATE::PAUSE)
+	{
+		return roundend;
 	}
 
 	int& ct_score = g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT].score;
@@ -152,7 +160,10 @@ bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEven
 			++ter_score;
 			break;
 		}
-		default: break;
+		default:
+		{
+			return roundend;
+		}
 	}
 
 	if (ct_score >= SCORE_TO_WIN && (ct_score - ter_score) >= 2)
@@ -172,7 +183,7 @@ bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEven
 		}
 	}
 
-	return chain->callNext(winStatus, event, tmDelay);
+	return roundend;
 }
 
 BOOL ReGameDLL_ChooseTeam(IReGameHook_HandleMenu_ChooseTeam* chain, CBasePlayer* pPlayer, int slot)
@@ -194,7 +205,7 @@ BOOL ReGameDLL_ChooseTeam(IReGameHook_HandleMenu_ChooseTeam* chain, CBasePlayer*
 			}
 			default: // for duelists
 			{
-				g_SurfModUtility.SayText(pPlayer->edict(), PRINT_TEAM_RED, "^3You can't change team. ^1Type ^4/surrender ^1 to lose duel.");
+				g_SurfModUtility.SayText(pPlayer->edict(), PRINT_TEAM_RED, "^3You can't change team. ^1Type ^4/resign ^1 to lose duel.");
 				return 1;
 			}
 		}
@@ -208,4 +219,23 @@ void ReGameDLL_RestartRound(IReGameHook_CSGameRules_RestartRound* chain)
 	chain->callNext();
 
 	g_SurfModDuel.RoundRestart();
+}
+
+void ReGameDLL_RoundRespawn(IReGameHook_CBasePlayer_RoundRespawn* chain, CBasePlayer* pPlayer)
+{
+	if (g_SurfModDuel.m_pDuel_info.is_now_duel)
+	{
+		if (pPlayer->entindex() == g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT].id)
+		{
+			CSGameRules()->m_iNumCTWins = g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT].score;
+		}
+		else if (pPlayer->entindex() == g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER].id)
+		{
+			CSGameRules()->m_iNumTerroristWins = g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER].score;
+		}
+
+		CSGameRules()->UpdateTeamScores();
+	}
+
+	chain->callNext(pPlayer);
 }

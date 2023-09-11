@@ -121,6 +121,8 @@ void surfmod::CDuel::AbortDuel(int EntityIndex)
 	auto judge = INDEXENT(EntityIndex);
 	g_SurfModTask.Remove(TASK_MATCH_START);
 	g_SurfModUtility.SayText(nullptr, PRINT_TEAM_RED, _TXT("^3Judge ^1[^4%s^1] ^3has terminated the duel."), STRING(judge->v.netname));
+	g_SurfModUtility.ServerCommand("sv_restart %d", 5);
+	CSGameRules()->m_bGameStarted = true;
 	// play sound here
 
 	this->State(DUEL_STATE::NOTHING);
@@ -151,7 +153,9 @@ void surfmod::CDuel::DuelWon(duel_player_t* player)
 
 void surfmod::CDuel::DuelPause(duel_player_t* player)
 {
-	g_SurfModUtility.SayText(nullptr, player->print_team, _TXT("^3%s disconnected! ^1Duel on pause.", player->name));
+	this->m_pDuel_info.state = DUEL_STATE::PAUSE;
+
+	g_SurfModUtility.SayText(nullptr, player->print_team, _TXT("^3%s ^1has been ^4disconnected^1! Duel on pause.", player->name));
 	g_SurfModUtility.SayText(nullptr, PRINT_TEAM_GREY, _TXT("^3Waiting for the ^4judge ^3decision..."));
 	// Открыть судье меню о присуждении поражения или ожидания коннекта игрока (придётся запоминать судью когда он запускает дуэль)
 }
@@ -178,15 +182,29 @@ void surfmod::CDuel::State(DUEL_STATE state)
 			break;
 		}
 
+		case DUEL_STATE::UNPAUSE:
+		{
+			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_DEFAULT, _TXT("^3Get ready for restart."));
+			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_DEFAULT, _TXT("^3Get ready for restart."));
+			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_DEFAULT, _TXT("^3Get ready for restart."));
+			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_DEFAULT, _TXT("^3Get ready for restart."));
+			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_DEFAULT, _TXT("^3Get ready for restart."));
+
+			this->m_pDuel_info.state = DUEL_STATE::GOING;
+			g_SurfModUtility.ServerCommand("sv_restart %d", 7);
+			CSGameRules()->m_bGameStarted = true;
+			break;
+		}
+
 		case DUEL_STATE::GOING:
 		{
 			g_SurfModUtility.HudMessage(nullptr, g_SurfModUtility.HudParam(50, 200, 255, -1.0, 0.35, 1, 13.0, 10.0, 0.0f, 0.0f, 1),
 				_TXT("%s", g_SurfModDuel.m_pDuel_info.player[Team::CT].name));
 
-			g_SurfModUtility.HudMessage(nullptr, g_SurfModUtility.HudParam(255, 255, 255, -1.0, 0.37, 1, 13.0, 10.0, 0.0f, 0.0f, 2),
+			g_SurfModUtility.HudMessage(nullptr, g_SurfModUtility.HudParam(255, 255, 255, -1.0, 0.38, 1, 13.0, 10.0, 0.0f, 0.0f, 2),
 				_TXT("---------- VS ----------"));
 
-			g_SurfModUtility.HudMessage(nullptr, g_SurfModUtility.HudParam(220, 40, 40, -1.0, 0.39, 1, 13.0, 10.0, 0.0f, 0.0f, 3),
+			g_SurfModUtility.HudMessage(nullptr, g_SurfModUtility.HudParam(220, 40, 40, -1.0, 0.41, 1, 13.0, 10.0, 0.0f, 0.0f, 3),
 				_TXT("%s", g_SurfModDuel.m_pDuel_info.player[Team::TER].name));
 
 			this->m_pDuel_info.player[Team::CT].score = 0;
@@ -194,6 +212,7 @@ void surfmod::CDuel::State(DUEL_STATE state)
 			this->m_pDuel_info.is_now_duel = true;
 			break;
 		}
+
 		case DUEL_STATE::WINING:
 		{
 			auto print_team = this->m_pDuel_info.player[Team::WINNER].print_team;
@@ -210,6 +229,40 @@ void surfmod::CDuel::State(DUEL_STATE state)
 
 		default: break;
 	}
+}
+
+void surfmod::CDuel::ClientDisconnect(edict_t* player)
+{
+	if (this->m_pDuel_info.is_now_duel)
+	{
+		auto steamid = g_engfuncs.pfnGetPlayerAuthId(player);
+
+		if (!Q_strcmp(steamid, this->m_pDuel_info.player[Team::CT].auth_id.c_str()))
+		{
+			g_SurfModDuel.DuelPause(&this->m_pDuel_info.player[Team::CT]);
+		}
+		else if (!Q_strcmp(steamid, this->m_pDuel_info.player[Team::TER].auth_id.c_str()))
+		{
+			g_SurfModDuel.DuelPause(&this->m_pDuel_info.player[Team::TER]);
+		}
+	}
+}
+
+void surfmod::CDuel::DuelUnpause(int time)
+{
+	g_SurfModDuel.State(DUEL_STATE::UNPAUSE);
+}
+
+void surfmod::CDuel::DuelistComeback(int player_id, Team player_team)
+{
+	int score = g_SurfModDuel.m_pDuel_info.player[player_team].score;
+	g_SurfModDuel.m_pDuel_info.player[player_team].init(player_id, player_team);
+	g_SurfModDuel.m_pDuel_info.player[player_team].base->CSPlayer()->JoinTeam(static_cast<TeamName>(player_team));
+	g_SurfModDuel.m_pDuel_info.player[player_team].score = score;
+
+	g_SurfModUtility.SayText(nullptr, g_SurfModDuel.m_pDuel_info.player[player_team].print_team, "^3%s ^1is back! ^4Continue the duel.", g_SurfModDuel.m_pDuel_info.player[player_team].name);
+
+	g_SurfModTask.Create(TASK_DUEL_UNPAUSE, 5.f, false, reinterpret_cast<void*>(g_SurfModDuel.DuelUnpause), 5);
 }
 
 void surfmod::CDuel::StartRestarting()
@@ -241,6 +294,5 @@ void surfmod::CDuel::RoundRestart()
 }
 
 // TODO: Возможность игроку сдаться /resign или т.п.
-// TODO: Режим ожидания, т.е. если игрок вылетел и т.д. дуэль не будет проиграна. (потом сделать квар)
 // TODO: Судья может принудительно засчитать поражение или отдать раунд игроку (сделать всё с подтверждением)
-// TODO: Нормальный худ отсчёта начало дуэли (сейчас он вводит в заблуждение т.к. после начинаются рестарты и не понятно когда уже дуэль началась)
+// если вышли оба игрока то AbortDuel
