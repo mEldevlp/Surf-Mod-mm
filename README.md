@@ -43,7 +43,8 @@ I will try to do about the same [click](https://forums.alliedmods.net/showthread
 <details>
   <summary>Surf Speedrun Timer</summary>
 <br>
-Speedrun Timer. Instead of a big kz-arg plugin, there will be a simple timer with saving the results and outputting it to MOTD<br><br>
+	
+Speedrun Timer. Instead of a big [kz-arg](https://forums.alliedmods.net/showthread.php?t=81692) plugin, there will be a simple timer with saving the results and outputting it to MOTD<br><br>
   
 Will works with box-zones
 </details>
@@ -60,7 +61,7 @@ In Visual Studio 2022 i have pre and post building events. Change these for your
 Path: **".\SurfMod\include\buildevents\"**
 
 <details>
-  <summary>Event <b>pre_shutdown_server</b> is shutdown server (hlds.exe proceess kill)</summary>
+  <summary>Event <b>pre_shutdown_server</b> is shutdown server (hlds.exe process kill)</summary>
   
 ```bat
 tasklist /fi "imagename eq hlds.exe" |find ":" > nul
@@ -92,7 +93,7 @@ if exist %hldsPath% (start /min /d "%hldsPath%" hlds.exe %hldsParam%)
 Also you can delete events.
 
 <details>
-  <summary>In <b>SurfMod.vcxproj</b> file tags <PostBuildEvent> and <PreBuildEvent></summary>
+  <summary>In <b>SurfMod.vcxproj</b> file tags <<em>PostBuildEvent</em>> and <<em>PreBuildEvent</em>> </summary>
 
 ```xml
     <PostBuildEvent>
