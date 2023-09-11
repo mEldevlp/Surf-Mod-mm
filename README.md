@@ -6,5 +6,5 @@
 
 - [x] Remove Surf stuck
 - [ ] Surf Duel System
-- [ ] Box zones (anti camp etc)
+- [ ] Box zones (anti camp, start zone instead a button, etc)
 - [ ] Speedrun Timer for sr maps (special maplist)
