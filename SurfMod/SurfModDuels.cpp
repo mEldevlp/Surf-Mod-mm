@@ -13,6 +13,8 @@ void surfmod::CDuel::JudgeMenuMain(int EntityIndex)
 
 	g_SurfModMenu[EntityIndex].AddItem(!isduel ? -1 : 1, _TXT("Abort the duel %s", isduel ? "\0" : "^y(^rduel isnt going up^y)"), !isduel);
 
+	g_SurfModMenu[EntityIndex].AddItem(!isduel ? -1 : 2, _TXT("Backup rounds"), !isduel);
+
 	g_SurfModMenu[EntityIndex].Show(EntityIndex);
 }
 
@@ -24,12 +26,17 @@ void surfmod::CDuel::JudgeMenuMain_Handle(int EntityIndex, P_MENU_ITEM Item)
 		{
 			std::memset(g_SurfModDuel.m_iJudge_choice[EntityIndex], 0, sizeof(g_SurfModDuel.m_iJudge_choice[EntityIndex]));
 
-			g_SurfModDuel.JudgeChoosePlayerMenu(EntityIndex, true);
+			g_SurfModDuel.JudgeChoosePlayerMenu(EntityIndex);
 			break;
 		}
 		case 1:
 		{
 			g_SurfModDuel.AbortDuel(EntityIndex);
+			break;
+		}
+		case 2:
+		{
+			g_SurfModDuel.BackupRoundMenu(EntityIndex);
 			break;
 		}
 		default:
@@ -39,7 +46,7 @@ void surfmod::CDuel::JudgeMenuMain_Handle(int EntityIndex, P_MENU_ITEM Item)
 	}
 }
 
-void surfmod::CDuel::JudgeChoosePlayerMenu(int EntityIndex, bool isfirst_open)
+void surfmod::CDuel::JudgeChoosePlayerMenu(int EntityIndex)
 {
 	std::string title = _TXT("^rJudge Panel\n^yChoose a pair of players:\n\n");
 
@@ -96,7 +103,7 @@ void surfmod::CDuel::JudgeChoosePlayerMenu_Handle(int EntityIndex, P_MENU_ITEM I
 	if (Item.Info == -1)
 	{
 		g_SurfModUtility.SayText(Player->edict(), PRINT_TEAM_RED, "^3You can not choose him twice!");
-		g_SurfModDuel.JudgeChoosePlayerMenu(EntityIndex, false);
+		g_SurfModDuel.JudgeChoosePlayerMenu(EntityIndex);
 
 		return void();
 	}
@@ -113,7 +120,7 @@ void surfmod::CDuel::JudgeChoosePlayerMenu_Handle(int EntityIndex, P_MENU_ITEM I
 
 	int id_first_choice = g_SurfModDuel.m_iJudge_choice[EntityIndex][0];
 	g_SurfModDuel.m_iJudge_choice[EntityIndex][id_first_choice == 0 ? 0 : 1] = Item.Info;
-	g_SurfModDuel.JudgeChoosePlayerMenu(EntityIndex, false);
+	g_SurfModDuel.JudgeChoosePlayerMenu(EntityIndex);
 }
 
 void surfmod::CDuel::AbortDuel(int EntityIndex)
@@ -126,6 +133,43 @@ void surfmod::CDuel::AbortDuel(int EntityIndex)
 	// play sound here
 
 	this->State(DUEL_STATE::NOTHING);
+}
+
+void surfmod::CDuel::BackupRoundMenu(int EntityIndex)
+{
+	std::string title = g_SurfModUtility.FormatString("^rBackup round\n\n");
+
+	g_SurfModMenu[EntityIndex].Create(title, true, reinterpret_cast<void*>(this->BackupRoundMenu_Handle));
+
+	for (int i = 0; i < this->m_iRoundsCount; i++)
+	{
+		g_SurfModMenu[EntityIndex].AddItem(i, _TXT("CT - ^y%d \\d||| ^y%d ^w- TER", this->m_pDuel_info.round[i][0], this->m_pDuel_info.round[i][1]));
+	}
+
+	g_SurfModMenu[EntityIndex].Show(EntityIndex);
+}
+
+void surfmod::CDuel::BackupRoundMenu_Handle(int EntityIndex, P_MENU_ITEM Item)
+{
+	g_SurfModDuel.m_pDuel_info.state = DUEL_STATE::PAUSE;
+
+	auto judge = INDEXENT(EntityIndex);
+
+	g_SurfModUtility.SayText(nullptr, PRINT_TEAM_RED, _TXT("^3Judge ^1[^4%s^1] ^3has backup round ^1(%d)"), STRING(judge->v.netname), Item.Info);
+
+	g_SurfModDuel.m_pDuel_info.player[Team::CT].score = g_SurfModDuel.m_pDuel_info.round[Item.Info][0];
+	g_SurfModDuel.m_pDuel_info.player[Team::TER].score = g_SurfModDuel.m_pDuel_info.round[Item.Info][1];
+
+	g_SurfModUtility.SayText(nullptr, PRINT_TEAM_GREY, _TXT("^3Scorecard: ^4%s ^1%d ^3: ^1%d ^4%s",
+		g_SurfModDuel.m_pDuel_info.player[Team::CT].name,
+		g_SurfModDuel.m_pDuel_info.player[Team::CT].score,
+		g_SurfModDuel.m_pDuel_info.player[Team::TER].score,
+		g_SurfModDuel.m_pDuel_info.player[Team::TER].name
+		));
+
+	g_SurfModDuel.State(DUEL_STATE::UNPAUSE);
+
+	g_SurfModDuel.UpdateGameInfo(false);
 }
 
 void surfmod::CDuel::StartDuel()
@@ -167,6 +211,8 @@ void surfmod::CDuel::State(DUEL_STATE state)
 		case DUEL_STATE::NOTHING:
 		{
 			this->m_pDuel_info.player.clear();
+			this->m_pDuel_info.round.clear();
+			this->m_iRoundsCount = 0;
 			this->m_pDuel_info.is_now_duel = false;
 			break;
 		}
@@ -184,10 +230,6 @@ void surfmod::CDuel::State(DUEL_STATE state)
 
 		case DUEL_STATE::UNPAUSE:
 		{
-			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_DEFAULT, _TXT("^3Get ready for restart."));
-			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_DEFAULT, _TXT("^3Get ready for restart."));
-			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_DEFAULT, _TXT("^3Get ready for restart."));
-			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_DEFAULT, _TXT("^3Get ready for restart."));
 			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_DEFAULT, _TXT("^3Get ready for restart."));
 
 			this->m_pDuel_info.state = DUEL_STATE::GOING;
@@ -210,6 +252,9 @@ void surfmod::CDuel::State(DUEL_STATE state)
 			this->m_pDuel_info.player[Team::CT].score = 0;
 			this->m_pDuel_info.player[Team::TER].score = 0;
 			this->m_pDuel_info.is_now_duel = true;
+
+			this->UpdateGameInfo();
+
 			break;
 		}
 
@@ -218,9 +263,6 @@ void surfmod::CDuel::State(DUEL_STATE state)
 			auto print_team = this->m_pDuel_info.player[Team::WINNER].print_team;
 			auto winner_name = this->m_pDuel_info.player[Team::WINNER].name;
 
-			g_SurfModUtility.SayText(nullptr, print_team, _TXT("^3%s ^4won the duel!", winner_name));
-			g_SurfModUtility.SayText(nullptr, print_team, _TXT("^3%s ^4won the duel!", winner_name));
-			g_SurfModUtility.SayText(nullptr, print_team, _TXT("^3%s ^4won the duel!", winner_name));
 			g_SurfModUtility.SayText(nullptr, print_team, _TXT("^3%s ^4won the duel!", winner_name));
 
 			this->State(DUEL_STATE::NOTHING);
@@ -255,14 +297,14 @@ void surfmod::CDuel::DuelUnpause(int time)
 
 void surfmod::CDuel::DuelistComeback(int player_id, Team player_team)
 {
-	int score = g_SurfModDuel.m_pDuel_info.player[player_team].score;
-	g_SurfModDuel.m_pDuel_info.player[player_team].init(player_id, player_team);
-	g_SurfModDuel.m_pDuel_info.player[player_team].base->CSPlayer()->JoinTeam(static_cast<TeamName>(player_team));
-	g_SurfModDuel.m_pDuel_info.player[player_team].score = score;
+	int score = this->m_pDuel_info.player[player_team].score;
+	this->m_pDuel_info.player[player_team].init(player_id, player_team);
+	this->m_pDuel_info.player[player_team].base->CSPlayer()->JoinTeam(static_cast<TeamName>(player_team));
+	this->m_pDuel_info.player[player_team].score = score;
 
-	g_SurfModUtility.SayText(nullptr, g_SurfModDuel.m_pDuel_info.player[player_team].print_team, "^3%s ^1is back! ^4Continue the duel.", g_SurfModDuel.m_pDuel_info.player[player_team].name);
+	g_SurfModUtility.SayText(nullptr, this->m_pDuel_info.player[player_team].print_team, "^3%s ^1is back! ^4Continue the duel.", this->m_pDuel_info.player[player_team].name);
 
-	g_SurfModTask.Create(TASK_DUEL_UNPAUSE, 5.f, false, reinterpret_cast<void*>(g_SurfModDuel.DuelUnpause), 5);
+	g_SurfModTask.Create(TASK_DUEL_UNPAUSE, 5.f, false, reinterpret_cast<void*>(this->DuelUnpause), 5);
 }
 
 void surfmod::CDuel::StartRestarting()
@@ -282,17 +324,34 @@ void surfmod::CDuel::StartRestarting()
 
 void surfmod::CDuel::RoundRestart()
 {
-	if (this->m_iRestart_times > 0)
+	if (this->m_pDuel_info.state == DUEL_STATE::PREPARING)
 	{
-		g_SurfModUtility.ServerCommand("sv_restart %d", --this->m_iRestart_times);
+		--this->m_iRestart_times;
 
-		if (this->m_iRestart_times == 0)
+		if (this->m_iRestart_times > 0)
+		{
+			g_SurfModUtility.ServerCommand("sv_restart %d", this->m_iRestart_times);
+		}
+		else if (this->m_iRestart_times == 0)
+		{
+			g_SurfModUtility.ServerCommand("sv_restart %d", 5);
+			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_DEFAULT, _TXT("^3Last restart. ^4gl & hf!"));
+		}
+		else if (this->m_iRestart_times == -1)
 		{
 			this->State(DUEL_STATE::GOING);
 		}
 	}
 }
 
+void surfmod::CDuel::UpdateGameInfo(bool isAddRound)
+{
+	this->m_pDuel_info.round.push_back({ this->m_pDuel_info.player[Team::CT].score, this->m_pDuel_info.player[Team::TER].score });
+
+	this->m_iRoundsCount += isAddRound ? 1 : 0;
+}
+
 // TODO: Возможность игроку сдаться /resign или т.п.
-// TODO: Судья может принудительно засчитать поражение или отдать раунд игроку (сделать всё с подтверждением)
+// TODO: Судья может принудительно засчитать поражение или отдать раунд игроку
+// TODO: Система отката к нужному раунду
 // если вышли оба игрока то AbortDuel

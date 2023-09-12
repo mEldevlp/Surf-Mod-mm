@@ -17,7 +17,7 @@ namespace surfmod
 		WINNER = 10
 	};
 
-	typedef struct duel_player_s
+	struct duel_player_t
 	{
 		CBasePlayer* base;
 		const char* name;
@@ -38,29 +38,33 @@ namespace surfmod
 			this->score = 0;
 			this->print_team = player_team == Team::CT ? PRINT_TEAM_BLUE : PRINT_TEAM_RED;
 		}
-	} duel_player_t;
+	};
 
-	typedef struct duel_info_s
+	struct duel_info_t
 	{
 		bool is_now_duel = false;
 		DUEL_STATE state = DUEL_STATE::NOTHING;
 		std::map<Team, duel_player_t> player;
-
-	} duel_info_t;
+		std::vector<std::array<int, 2>> round;
+	};
 
 	class CDuel
 	{
 	public:
-
 		void JudgeMenuMain(int EntityIndex);
 		static void JudgeMenuMain_Handle(int EntityIndex, P_MENU_ITEM Item);
 
-		void JudgeChoosePlayerMenu(int EntityIndex, bool isfirst_open);
+		void JudgeChoosePlayerMenu(int EntityIndex);
 		static void JudgeChoosePlayerMenu_Handle(int EntityIndex, P_MENU_ITEM Item);
+
+		void BackupRoundMenu(int EntityIndex);
+		static void BackupRoundMenu_Handle(int EntityIndex, P_MENU_ITEM Item);
+
 		void AbortDuel(int EntityIndex);
 		void StartDuel();
 		void DuelWon(duel_player_t* player);
 		void DuelPause(duel_player_t* player);
+
 		static void DuelUnpause(int time);
 
 		void DuelistComeback(int player_id, Team player_team);
@@ -69,10 +73,12 @@ namespace surfmod
 
 		void State(DUEL_STATE state);
 
-		duel_info_t m_pDuel_info;
-
 		void StartRestarting();
 		void RoundRestart();
+		void UpdateGameInfo(bool isAddRound = true);
+
+		duel_info_t m_pDuel_info;
+		int m_iRoundsCount = 0;
 
 	private:
 		bool is_duelist_disconnected(const char* steamid, Team* player_team);
