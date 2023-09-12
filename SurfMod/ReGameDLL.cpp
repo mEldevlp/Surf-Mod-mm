@@ -145,19 +145,19 @@ bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEven
 		return roundend;
 	}
 
-	int& ct_score = g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT].score;
-	int& ter_score = g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER].score;
+	auto& ct = g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT];
+	auto& ter = g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER];
 
 	switch (event)
 	{
 		case ScenarioEventEndRound::ROUND_CTS_WIN:
 		{
-			++ct_score;
+			++ct.score;
 			break;
 		}
 		case ScenarioEventEndRound::ROUND_TERRORISTS_WIN:
 		{
-			++ter_score;
+			++ter.score;
 			break;
 		}
 		default:
@@ -166,20 +166,22 @@ bool ReGameDLL_RoundEnd(IReGameHook_RoundEnd* chain, int winStatus, ScenarioEven
 		}
 	}
 
-	if (ct_score >= SCORE_TO_WIN && (ct_score - ter_score) >= 2)
+	if (ct.score >= SCORE_TO_WIN && (ct.score - ter.score) >= 2)
 	{
-		g_SurfModDuel.DuelWon(&g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT]);
+		g_SurfModDuel.DuelWon(&ct);
 	}
-	else if (ter_score >= SCORE_TO_WIN && (ter_score - ct_score) >= 2)
+	else if (ter.score >= SCORE_TO_WIN && (ter.score - ct.score) >= 2)
 	{
-		g_SurfModDuel.DuelWon(&g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER]);
+		g_SurfModDuel.DuelWon(&ter);
 	}
 	else
 	{
-		if ((ct_score + ter_score) != 0)
+		if ((ct.score + ter.score) != 0)
 		{
-			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_BLUE, _TXT("^3%s ^1- ^4%d", g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT].name, ct_score));
-			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_RED, _TXT("^3%s ^1- ^4%d", g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER].name, ter_score));
+			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_BLUE, _TXT("^3%s ^1- ^4%d", ct.name, ct.score));
+			g_SurfModUtility.SayText(nullptr, PRINT_TEAM_RED, _TXT("^3%s ^1- ^4%d", ter.name, ter.score));
+
+			g_SurfModDuel.UpdateGameInfo();
 		}
 	}
 
@@ -225,13 +227,16 @@ void ReGameDLL_RoundRespawn(IReGameHook_CBasePlayer_RoundRespawn* chain, CBasePl
 {
 	if (g_SurfModDuel.m_pDuel_info.is_now_duel)
 	{
-		if (pPlayer->entindex() == g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT].id)
+		auto& ct = g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT];
+		auto& ter = g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER];
+
+		if (pPlayer->entindex() == ct.id)
 		{
-			CSGameRules()->m_iNumCTWins = g_SurfModDuel.m_pDuel_info.player[surfmod::Team::CT].score;
+			CSGameRules()->m_iNumCTWins = ct.score;
 		}
-		else if (pPlayer->entindex() == g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER].id)
+		else if (pPlayer->entindex() == ter.id)
 		{
-			CSGameRules()->m_iNumTerroristWins = g_SurfModDuel.m_pDuel_info.player[surfmod::Team::TER].score;
+			CSGameRules()->m_iNumTerroristWins = ter.score;
 		}
 
 		CSGameRules()->UpdateTeamScores();
