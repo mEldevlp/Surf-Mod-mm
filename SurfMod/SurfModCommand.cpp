@@ -38,6 +38,16 @@ bool surfmod::CCommand::ClientCommand(CBasePlayer* Player, const char* pcmd, con
 			g_SurfModDuel.JudgeMenuMain(Player->entindex());
 			return true;
 		}
+		case CONSOLE_COMMANDS::RESIGN:
+		{
+			g_SurfModDuel.PlayerResign(Player->entindex());
+			break;
+		}
+		case CONSOLE_COMMANDS::BOX:
+		{
+			g_SurfModBox.BoxMainMenu(Player->entindex());
+			break;
+		}
 	}
 
 	return false;
@@ -53,5 +63,16 @@ surfmod::CONSOLE_COMMANDS surfmod::CCommand::get_UserCommand(const char* pcmd)
 	{
 		return CONSOLE_COMMANDS::SURF_DUEL;
 	}
+	else if (!Q_strcmp(pcmd, "resignduel"))
+	{
+		return CONSOLE_COMMANDS::RESIGN;
+	}
+	else if (!Q_strcmp(pcmd, "boxmenu"))
+	{
+		return CONSOLE_COMMANDS::BOX;
+	}
+	else
+	{
+		return CONSOLE_COMMANDS::UNDEFINDED;
+	}
 }
-

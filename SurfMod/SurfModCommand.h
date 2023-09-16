@@ -3,9 +3,12 @@
 namespace surfmod {
 
 	enum CONSOLE_COMMANDS {
+		UNDEFINDED = -1,
 		MENUSELECT,
 		CHOOSETEAM,
-		SURF_DUEL
+		SURF_DUEL, 
+		RESIGN,
+		BOX,
 	};
 
 	class CCommand

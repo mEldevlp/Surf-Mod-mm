@@ -85,6 +85,7 @@ void surfmod::CMenu::Hide(int EntityIndex)
 				g_engfuncs.pfnWriteByte(0);
 				g_engfuncs.pfnWriteString("");
 				g_engfuncs.pfnMessageEnd();
+
 			}
 		}
 	}

@@ -17,7 +17,7 @@ void surfmod::CUtility::SayText(edict_t* pEntity, int Sender, const char* Format
 
 		char Temp[MAX_LINE_TXT_MSG] = { 0 };
 
-		Q_snprintf(Temp, sizeof(Temp), "^1[^4%s^1] %s", Plugin_info.logtag, Buffer);
+		Q_snprintf(Temp, sizeof(Temp), "^4%s ^3>>> %s", Plugin_info.logtag, Buffer);
 
 		Q_strcpy_s(Buffer, Temp);
 
