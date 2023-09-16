@@ -8,7 +8,7 @@ set "copyPath=C:\Users\mEl\Desktop\CS_SERVER_1_9_AMX\cstrike\addons\SurfMod\dlls
 
 if exist %copyPath% (copy %outputFile% %copyPath%) else (echo "something wrong")
 
-set "hldsParam=-console -game cstrike -secure -pingboost 3 -master +port 27017 +map de_dust2 +maxplayers 16 +sys_ticrate 512"
+set "hldsParam=-console -game cstrike -secure -pingboost 3 -master +port 27017 +map surf_ski_2 +maxplayers 16 +sys_ticrate 512"
 
 set "hldsPath=C:\Users\mEl\Desktop\CS_SERVER_1_9_AMX"
 
