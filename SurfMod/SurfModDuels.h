@@ -60,6 +60,12 @@ namespace surfmod
 		void BackupRoundMenu(int EntityIndex);
 		static void BackupRoundMenu_Handle(int EntityIndex, P_MENU_ITEM Item);
 
+		void GiveRoundMenu(int EntityIndex);
+		static void GiveRoundMenu_Handle(int EntityIndex, P_MENU_ITEM Item);
+
+		void TakeRoundMenu(int EntityIndex);
+		static void TakeRoundMenu_Handle(int EntityIndex, P_MENU_ITEM Item);
+
 		void AbortDuel(int EntityIndex);
 		void StartDuel();
 		void DuelWon(duel_player_t* player);
@@ -84,7 +90,7 @@ namespace surfmod
 		bool is_duelist_disconnected(const char* steamid, Team* player_team);
 
 		int m_iJudge_choice[33][2] = { {0} , {0} };
-		int m_iJudge_id[33];
+		int m_iJudge_id[33] = { 0 };
 		int m_iRestart_times;
 	};
 
