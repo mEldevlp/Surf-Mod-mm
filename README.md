@@ -12,25 +12,28 @@
 ## Overview
 This plugin in development but in plans to add the next features:
 
-<details>
-  <summary>Remove Surf Stack</summary>
-<br>
-- Remove STUCK on the ramp (when you surf with high fps you are stucked)
-</details>
 
-<details>
-  <summary>Duel system in the Balkan rules</summary>
-<br>
+### Remove Surf Stack
+- Remove STUCK on the ramp (when you surf with high fps you are stucked)
+
+### Duel system in the Balkan rules
+
 Previously, any duels on the surf were without any plugins
 
 This plugin will have a judge will can do start the duel, stop and give the round to duelists as well
 
-- The system of returning to the round (returns the score of the game in need round)
-
+- Give round to player
+- Take round from player
+- Backup round (returns the score of the game in need round)
+- Give Win to player
+- Pause\Unpuase the duel
+- Aborting duel
+- The "resign" system, the player can surrender at any time
 - The system of waiting for the player (in case the Internet turned off or for anything)
 
-- The "resign" system, the player can surrender at any time
-</details>
+Preview judge menu
+
+<img src="https://i.ibb.co/s5RZjJN/judge-menu.png" alt="judge menu">
 
 <details>
   <summary>Box zones</summary>
