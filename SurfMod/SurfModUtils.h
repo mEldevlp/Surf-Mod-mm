@@ -18,6 +18,8 @@ constexpr auto MAX_LINE_TXT_MSG = 191;
 
 namespace surfmod
 {
+#define BIT(n) (1 << (n))
+
 	class CUtility
 	{
 	public:

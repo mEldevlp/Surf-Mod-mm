@@ -11,8 +11,11 @@ void surfmod::CUtility::SayText(edict_t* pEntity, int Sender, const char* Format
 		char Buffer[MAX_LINE_TXT_MSG] = { 0 };
 
 		va_list ArgList;
+
 		va_start(ArgList, Format);
+
 		Q_vsnprintf(Buffer, sizeof(Buffer), Format, ArgList);
+
 		va_end(ArgList);
 
 		char Temp[MAX_LINE_TXT_MSG] = { 0 };
