@@ -4,6 +4,14 @@ surfmod::CDuel g_SurfModDuel;
 
 void surfmod::CDuel::JudgeMenuMain(int EntityIndex)
 {
+	auto Flags = g_SurfModUsers.GetFlags(EntityIndex);
+
+	if (!(Flags & ACCES_ADMIN::MENU))
+	{
+		g_SurfModUtility.SayText(INDEXENT(EntityIndex), PRINT_TEAM_RED, "^3You can not do this!");
+		return;
+	}
+
 	std::string title = g_SurfModUtility.FormatString("^rJudge Panel\n\n");
 	bool isduel = this->m_pDuel_info.is_now_duel;
 	bool ispreparing = this->m_pDuel_info.state == DUEL_STATE::PREPARING;

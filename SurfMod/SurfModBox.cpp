@@ -36,7 +36,7 @@ edict_t* surfmod::CBox::box_Create(std::string szClass, std::string szId, const 
 {
 	edict_t* pBox = g_engfuncs.pfnCreateNamedEntity(MAKE_STRING("info_target"));
 
-	if (!pBox || !pBox->pvPrivateData) [[unlikely]]
+	if (!pBox || !pBox->pvPrivateData)
 	{
 		if (pBox)
 			g_engfuncs.pfnRemoveEntity(pBox);

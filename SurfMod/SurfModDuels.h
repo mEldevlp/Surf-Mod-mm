@@ -2,7 +2,8 @@
 
 namespace surfmod
 {
-	enum DUEL_STATE {
+	enum DUEL_STATE
+	{
 		NOTHING,
 		PREPARING,
 		PAUSE,
@@ -11,7 +12,8 @@ namespace surfmod
 		WINING
 	};
 
-	enum Team {
+	enum Team
+	{
 		TER = 1,
 		CT,
 		WINNER = 10

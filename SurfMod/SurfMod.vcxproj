@@ -104,6 +104,7 @@
     <ClInclude Include="precompiled.h" />
     <ClInclude Include="ReAPI.h" />
     <ClInclude Include="ReGameDLL.h" />
+    <ClInclude Include="SurfModUsers.h" />
     <ClInclude Include="SurfModBox.h" />
     <ClInclude Include="SurfModCommand.h" />
     <ClInclude Include="SurfModDuels.h" />
@@ -123,6 +124,7 @@
     </ClCompile>
     <ClCompile Include="ReAPI.cpp" />
     <ClCompile Include="ReGameDLL.cpp" />
+    <ClCompile Include="SurfModUsers.cpp" />
     <ClCompile Include="SurfModBox.cpp" />
     <ClCompile Include="SurfModCommand.cpp" />
     <ClCompile Include="SurfModDuels.cpp" />

@@ -75,6 +75,7 @@
 #include "include/json.hpp"
 
 // Surf Mod
+#include "SurfModUsers.h"
 #include "SurfModCommand.h"
 #include "SurfModUtils.h"
 #include "SurfModMenu.h"

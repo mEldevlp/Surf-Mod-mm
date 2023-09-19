@@ -15,6 +15,7 @@ C_DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS* pFunctionTable, int* interfaceVersi
 	gDLL_FunctionTable_Pre.pfnCmdEnd = DLL_PRE_CmdEnd;
 
 	gDLL_FunctionTable_Pre.pfnClientDisconnect = DLL_PRE_ClientDisconnect;
+	gDLL_FunctionTable_Pre.pfnClientConnect = DLL_PRE_ClientConnect;
 
 	memcpy(pFunctionTable, &gDLL_FunctionTable_Pre, sizeof(DLL_FUNCTIONS));
 
@@ -49,6 +50,18 @@ void DLL_PRE_ClientDisconnect(edict_t* player)
 
 	RETURN_META(MRES_IGNORED);
 }
+
+BOOL DLL_PRE_ClientConnect(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128])
+{
+	if (!g_SurfModUsers.PlayerConnect(pEntity, pszName, pszAddress, szRejectReason))
+	{
+		RETURN_META_VALUE(MRES_SUPERCEDE, FALSE);
+		return FALSE;
+	}
+
+	RETURN_META_VALUE(MRES_IGNORED, TRUE);
+	return TRUE;
+}
 #pragma endregion
 
 #pragma region DLL_POST
@@ -69,6 +82,7 @@ C_DLLEXPORT int GetEntityAPI2_Post(DLL_FUNCTIONS* pFunctionTable, int* interface
 
 void DLL_POST_ServerActivate(edict_t* pEdictList, int edictCount, int clientMax)
 {
+	g_SurfModUsers.ServerActivate();
 	g_SurfModCommand.ServerActivate();
 	g_SurfModTask.ServerActivate();
 
