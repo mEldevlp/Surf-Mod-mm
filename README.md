@@ -113,7 +113,7 @@ Or use path `Project -> Properties -> Build Events`
 
 ## Todo list
 - [x] Remove Surf stuck
-- [ ] Surf Duel System (in progress)
+- [x] Surf Duel System
 - [ ] Box zones (anti camp, start zone instead of a button, etc) (didn't start)
 - [ ] Speedrun Timer for sr maps (special maplist) (didn't start)
 
