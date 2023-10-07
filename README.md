@@ -9,9 +9,12 @@
 ![Visitor Badge][visitor-badge]&nbsp;
 </div>
 
-## Overview
-This plugin in development but in plans to add the next features:
+## Requirements dev
+__MSVC v143__<br>
+__[ReHLDS 3.13.0.788][rehlds-link]__ or higher<br>
+__[ReGameDLL 5.22.0.593][regamedll-link]__ or higher<br>
 
+# Features
 
 ### Remove Surf Stack
 - Remove STUCK on the ramp (when you surf with high fps you are stucked)
@@ -121,6 +124,9 @@ Or use path `Project -> Properties -> Build Events`
 [build-linux-badge]:          https://img.shields.io/github/actions/workflow/status/mEldevlp/Surf-Mod-mm/makefile.yml?branch=master&style=for-the-badge&label=Linux%20CI&logo=linux&logoColor=white
 [license-badge]:              https://img.shields.io/github/license/mEldevlp/Surf-Mod-mm?style=for-the-badge&label=license&color=success
 [visitor-badge]:              https://visitor-badge.feriirawann.repl.co?username=mElDevlp&repo=Surf-Mod-mm&logo=Opsgenie&style=for-the-badge&label=Visitors
+
+[rehlds-link]: 		      https://github.com/dreamstalker/rehlds/releases/tag/3.13.0.788
+[regamedll-link]:	      https://github.com/s1lentq/ReGameDLL_CS/releases/tag/5.22.0.593	
 
 [license-link]:               https://github.com/mEldevlp/Surf-Mod-mm/blob/master/LICENSE
 [build-link]:                 https://github.com/mEldevlp/Surf-Mod-mm/actions
