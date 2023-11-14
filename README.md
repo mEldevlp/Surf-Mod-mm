@@ -16,7 +16,7 @@ __[ReGameDLL 5.22.0.593][regamedll-link]__ or higher<br>
 
 # Features
 
-### Remove Surf Stack
+### Remove Surf Stuck
 - Remove STUCK on the ramp (when you surf with high fps you are stucked)
 
 ### Duel system in the Balkan rules
