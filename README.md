@@ -6,7 +6,6 @@
 [![Windows CI][build-windows-badge]][build-link]&nbsp;
 [![Linux CI][build-linux-badge]][build-link]&nbsp;
 [![License][license-badge]][license-link]&nbsp;
-![Visitor Badge][visitor-badge]&nbsp;
 </div>
 
 ## Requirements dev
@@ -120,10 +119,12 @@ Or use path `Project -> Properties -> Build Events`
 - [ ] Box zones (anti camp, start zone instead of a button, etc) (didn't start)
 - [ ] Speedrun Timer for sr maps (special maplist) (didn't start)
 
+## Credits
+Based on [MathBot](https://github.com/SmileYzn/MatchBot) (by SmileYzn) and [super-speedrun](https://github.com/Lopol2010/super-speedrun) (by Lopol2010)
+
 [build-windows-badge]:        https://img.shields.io/github/actions/workflow/status/mEldevlp/Surf-Mod-mm/msbuild.yml?branch=master&style=for-the-badge&label=Windows%20CI&logo=windows
 [build-linux-badge]:          https://img.shields.io/github/actions/workflow/status/mEldevlp/Surf-Mod-mm/makefile.yml?branch=master&style=for-the-badge&label=Linux%20CI&logo=linux&logoColor=white
 [license-badge]:              https://img.shields.io/github/license/mEldevlp/Surf-Mod-mm?style=for-the-badge&label=license&color=success
-[visitor-badge]:              https://visitor-badge.feriirawann.repl.co?username=mElDevlp&repo=Surf-Mod-mm&logo=Opsgenie&style=for-the-badge&label=Visitors
 
 [rehlds-link]: 		      https://github.com/dreamstalker/rehlds/releases/tag/3.13.0.788
 [regamedll-link]:	      https://github.com/s1lentq/ReGameDLL_CS/releases/tag/5.22.0.593	
